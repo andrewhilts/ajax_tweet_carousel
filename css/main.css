@@ -1,0 +1,55 @@
+body {
+    background-color:#FFEEDB;
+    margin:0;
+}
+
+#wrapper {
+    width:1000px;
+    padding:20px;
+    margin:0px auto;
+    background-color:#FFFFFF;
+}
+.params-explain li em {
+    font-family:monospace;
+    font-style:normal;
+    color:#143647;
+    width:170px;
+    display:inline-block;
+}
+.params-explain li {
+    margin-bottom:1em;
+    border-bottom:1px dashed #ccc;
+    width:500px;    
+    list-style:none;
+}
+.params-explain {
+    margin:10px 0;
+    padding:0;
+}
+.params-explain p {
+    font-weight:bold;
+    width:460px;
+    padding:20px;
+}
+.based-on {
+    float:right;
+    background-color:#E3DBFF;
+    width:200px;
+    border:1px solid #ccc;
+    padding:10px;
+   -moz-border-radius: 10px;
+   -webkit-border-radius: 10px;
+   border-radius: 10px;
+}
+
+.based-on h3 {
+    border-top:1px solid #ccc;
+    padding-top:5px;
+}
+/*.jcarousel-container {margin:0 auto;}*/
+
+/*Github style*/
+aside {float:right; width:168px; margin:0 10px; border:1px solid #ccc}
+aside a {text-decoration:none; display:block; padding:5px}
+aside a:hover {background:#EF9A52}
+/*End Github Style*/

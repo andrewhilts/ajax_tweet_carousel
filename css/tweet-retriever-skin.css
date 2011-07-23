@@ -1,0 +1,96 @@
+body {font-family:Arial; font-size:13px}
+
+.jcarousel-skin-tweet-retriever .jcarousel-container {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+   border-radius: 10px;
+    background: #F0F6F9;
+    border: 1px solid #346F97;
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-direction-rtl {
+	direction: rtl;
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-container-horizontal {
+    /*width: 920px;*/
+    padding: 20px 40px;
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-container-vertical {
+    /*width: 300px;
+    height: 340px;*/
+    padding: 40px 20px;
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-clip {
+    overflow: hidden;
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-clip-horizontal {
+    /*width:  920px;
+    height: 60px;*/
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-clip-vertical {
+    /*width:  300px;
+    height: 340px;*/
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-item {
+    /*width: 300px;
+    height: 60px;*/
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-item-horizontal {
+	/*margin-left: 0;
+    margin-right: 10px;*/
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-direction-rtl .jcarousel-item-horizontal {
+	margin-left: 10px;
+    margin-right: 0;
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-item-vertical {
+    /*margin-bottom: 10px;*/
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-item-placeholder {
+    background: #fff;
+    color: #000;
+}
+
+
+.jcarousel-skin-tweet-retriever .jcarousel-item img {
+	float:left;
+	margin:3px 5px 0 0;
+	border:0;
+	width:48px;
+	height:48px;
+}
+.jcarousel-skin-tweet-retriever .jcarousel-item img a {
+	text-decoration:none;
+	border:0;
+}
+.jcarousel-skin-tweet-retriever .jcarousel-item span.name {
+	font-weight:bold;
+	font-size:small;
+}
+.jcarousel-skin-tweet-retriever .jcarousel-item span.name a {
+	color:#000;
+	text-decoration:none;
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-item span.date {
+	color:grey;
+	font-size:small;
+	float:right;
+	margin:0 2px 0 0;
+}
+.jcarousel-skin-tweet-retriever .jcarousel-item p {
+	margin:0.4em 0 0 0;
+	padding:0;
+	font-size:0.75em;
+}
+.jcarousel-skin-tweet-retriever .jcarousel-item span.real_time {display:none}
