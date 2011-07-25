@@ -25,6 +25,9 @@ $(document).ready(function(){
         user: "InternetRadio",
         tempo: 60,
         tweets: 50,
+        controlReply: true,
+        controlRetweet: true,
+        controlFavorite: true,
         container: "#tweets",
         displayVert: vert,
         //the below only sets the css height of the tweet container to be n*itemHeight+itemMargin*(n-1). If displayVert is false, use width/hoz instead of height/vert. ItemMargin only assigns a bottom or right margin to the item, depending on displayVert. Otherwise, delete these last params and set everything with CSS (by default, commented out in the css file)

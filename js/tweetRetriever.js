@@ -39,7 +39,9 @@ tweetRetriever = {
     this.user = params.user;
     this.container = params.container;
     this.skin =$(params.container)[0].className;
-    
+    this.controlRetweet = params.controlRetweet;
+	this.controlReply = params.controlReply;
+	this.controlFavorite = params.controlFavorite;
     if(params.displayVert == null){
         this.displayVert = true;
     }
@@ -144,6 +146,7 @@ tweetRetriever = {
     tweet += '<img src="'+item.user.profile_image_url+'" alt="'+item.user.name+'&rsquo;s profile picture"/></a>'
     tweet += '<span class="name"><a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page">'+item.user.name+'</a></span>';
     tweet += '<span class="date">'+tweet_time+'</span>';
+	tweet += '<div class="tweetControls"><a href="http://twitter.com/intent/tweet?in_reply_to='+item.id_str+'" class="tweetControl reply" title="Reply"><i></i></a><a href="http://twitter.com/intent/retweet?tweet_id='+item.id_str+'" class="tweetControl retweet" title="Retweet"><i></i></a><a href="http://twitter.com/intent/favorite?tweet_id='+item.id_str+'" class="tweetControl favorite" title="Favourite"><i></i></a></div>';
     tweet += '<p>'+tweetRetriever.textFormat(item.text)+'</p>';
     tweet += '<span class="real_time">'+item.created_at+'</span></li>';
     return tweet;

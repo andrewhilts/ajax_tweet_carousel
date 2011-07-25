@@ -75,7 +75,7 @@ body {font-family:Arial; font-size:13px}
 }
 .jcarousel-skin-tweet-retriever .jcarousel-item span.name {
 	font-weight:bold;
-	font-size:small;
+	font-size:0.8em;
 }
 .jcarousel-skin-tweet-retriever .jcarousel-item span.name a {
 	color:#000;
@@ -84,7 +84,7 @@ body {font-family:Arial; font-size:13px}
 
 .jcarousel-skin-tweet-retriever .jcarousel-item span.date {
 	color:grey;
-	font-size:small;
+	font-size:0.75em;
 	float:right;
 	margin:0 2px 0 0;
 }
@@ -94,3 +94,18 @@ body {font-family:Arial; font-size:13px}
 	font-size:0.75em;
 }
 .jcarousel-skin-tweet-retriever .jcarousel-item span.real_time {display:none}
+
+.tweetControls {font-size:16px; position:absolute; visibility:hidden; float:right;clear:right; margin:25px 0 0 220px;}
+
+li:hover .tweetControls {visibility:visible;}
+
+.tweetControls a {display:inline-block; margin:0 5px; padding:0;}
+
+.tweetControls a i {display:inline-block; width:16px; height:16px; background:no-repeat url('../img/twitter-sprite.png');}
+
+.tweetControls a.reply i {background-position:0 0;}
+.tweetControls a.reply:hover i {background-position:-16px 0;}
+.tweetControls a.favorite i {background-position:-32px 0;}
+.tweetControls a.favorite:hover i {background-position:-48px 0;}
+.tweetControls a.retweet i {background-position:-80px 0;}
+.tweetControls a.retweet:hover i {background-position:-96px 0;}
