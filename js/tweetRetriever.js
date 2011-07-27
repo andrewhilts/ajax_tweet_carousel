@@ -12,8 +12,13 @@ tweetRetriever = {
       type: 'GET',
   	  dataType: 'jsonp',
   	  timeout: 3000,
-  	  error: function(jqXHR, textStatus, errorThrown){alert(errorThrown);},
+  	  error: function(jqXHR, textStatus, errorThrown){
+		if(errorThrown == "timeout"){
+			$('#status').children('#server').html("No response from server. ");
+		}
+	  },
       success:  function(json){
+		$('#status').children('#server').html("");
         tweetRetriever.oldTweets = tweetRetriever.newTweets;
         tweetRetriever.newTweets = [];
         tweetRetriever.newTweetIDs = [];
@@ -30,11 +35,20 @@ tweetRetriever = {
   },
   //Period at which the query function is called; hence when the tweets will be updated. Don't do more than one per minute, or Twitter's API will kick your IP out for an hour.
   update: function () {
-    setTimeout("tweetRetriever.query()",this.tempo);
+	tweetRetriever.timeLeft--;
+	$('#status').children('#countdown').html("New tweets in "+tweetRetriever.timeLeft);
+	if(tweetRetriever.timeLeft>0){
+		setTimeout("tweetRetriever.update()",1000)
+	}
+	else{
+		tweetRetriever.timeLeft = tweetRetriever.tempo;
+		tweetRetriever.query();
+	}
   },
   //Function that sets up the TweetRetriever object, launches the first query
   init: function (params) {
     this.tempo = params.tempo*1000;
+	this.timeLeft = params.tempo;
     this.quantity = params.tweets;
     this.user = params.user;
     this.container = params.container;

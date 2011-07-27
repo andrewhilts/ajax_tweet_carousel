@@ -23,8 +23,8 @@ $(document).ready(function(){
   ?>
     tweetRetriever.init({
         user: "InternetRadio",
-        tempo: 60,
-        tweets: 50,
+        tempo: 120,
+        tweets: 10,
         controlReply: true,
         controlRetweet: true,
         controlFavorite: true,
@@ -47,6 +47,7 @@ $(document).ready(function(){
       <p>This system will check to see which of the currently displayed tweets are different from the latest ones, and replace those that are no longer in the latest 5 with the new tweets. 
       <h2>Latest Tweets from <em>InternetRadio</em></h2>
   <!-- Ensure your skin's classname begins with jcarousel-skin- !-->
+  <div id="status"><span id="server">Loading...</span><span id="countdown">New tweets in </span></div>
   <ul id="tweets" class="jcarousel-skin-tweet-retriever"></ul>
    <p>Easily configure either <a href="?v=f">horizontal</a> or <a href="?v=t">vertical</a> presentations.</a>
    <div class="based-on">
