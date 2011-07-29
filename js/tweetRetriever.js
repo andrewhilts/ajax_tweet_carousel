@@ -6,42 +6,44 @@ tweetRetriever = {
   initialized: false,
   //function that queries Twitter periodically and updates the Tweet arrays
   query: function () {
+			//alert("tweet");
     $.ajax({
-      crossDomain:true,
-      url: "http://twitter.com/status/user_timeline/"+this.user+".json?count="+this.quantity+"&rpp=5",
-      type: 'GET',
-  	  dataType: 'jsonp',
-  	  timeout: 3000,
-  	  error: function(jqXHR, textStatus, errorThrown){
-		if(errorThrown == "timeout"){
-			$('#status').children('#server').html("No response from server. ");
-		}
-	  },
-      success:  function(json){
-		$('#status').children('#server').html("");
-        tweetRetriever.oldTweets = tweetRetriever.newTweets;
-        tweetRetriever.newTweets = [];
-        tweetRetriever.newTweetIDs = [];
-        $.each(json,function(i,item) {
-          tweetRetriever.newTweets.push([item.id,item]);
+          crossDomain:true,
+          url: "http://twitter.com/status/user_timeline/"+this.user+".json?count="+this.quantity+"&rpp=5",
+          type: 'GET',
+      	  dataType: 'jsonp',
+      	  timeout: 3000,
+      	  error: function(jqXHR, textStatus, errorThrown){
+    		if(errorThrown == "timeout"){
+    			$('#status').children('#server').html("No response from server. ");
+    		}
+    	  },
+          success:  function(json){
+    		$('#status').children('#server').html("");
+            tweetRetriever.oldTweets = tweetRetriever.newTweets;
+            tweetRetriever.newTweets = [];
+            tweetRetriever.newTweetIDs = [];
+            $.each(json,function(i,item) {
+              tweetRetriever.newTweets.push([item.id,item]);
+            });
+            tweetRetriever.compareTweetQueries();
+            if (!tweetRetriever.initialized){
+              tweetRetriever.displayInit();
+            }
+          }   
         });
-        tweetRetriever.compareTweetQueries();
-        if (!tweetRetriever.initialized){
-          tweetRetriever.displayInit();
-        }
-      }   
-    });
     this.update();
   },
   //Period at which the query function is called; hence when the tweets will be updated. Don't do more than one per minute, or Twitter's API will kick your IP out for an hour.
   update: function () {
 	tweetRetriever.timeLeft--;
-	$('#status').children('#countdown').html("New tweets in "+tweetRetriever.timeLeft);
 	if(tweetRetriever.timeLeft>0){
 		setTimeout("tweetRetriever.update()",1000)
+		$('#status').children('#countdown').html("New tweets in "+tweetRetriever.timeLeft);
 	}
 	else{
-		tweetRetriever.timeLeft = tweetRetriever.tempo;
+		tweetRetriever.timeLeft = tweetRetriever.tempo/1000;
+		$('#status').children('#countdown').html("New tweets in "+tweetRetriever.timeLeft);
 		tweetRetriever.query();
 	}
   },

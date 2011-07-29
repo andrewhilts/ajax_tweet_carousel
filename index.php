@@ -23,7 +23,7 @@ $(document).ready(function(){
   ?>
     tweetRetriever.init({
         user: "InternetRadio",
-        tempo: 120,
+        tempo: 60,
         tweets: 10,
         controlReply: true,
         controlRetweet: true,
