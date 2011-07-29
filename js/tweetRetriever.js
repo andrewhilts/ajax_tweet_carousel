@@ -213,25 +213,23 @@ tweetRetriever = {
           }();
       var rightNow = new Date();
       var then = new Date(dateString);
-
       if (browser.ie) {
         // IE can't parse these crazy Ruby dates
         then = Date.parse(dateString.replace(/( \+)/, ' UTC$1'));
       }
 
       var diff = rightNow - then;
-
       var second = 1000,
           minute = second * 60,
           hour = minute * 60,
           day = hour * 24,
           week = day * 7;
 
-      if (isNaN(diff) || diff < 0) {
+      if (isNaN(diff)) {
         return ""; // return blank string if unknown
       }
 
-      if (diff < second * 2) {
+      if (diff < second * 2 || diff < 0) {
         // within 2 seconds
         return "right now";
       }
