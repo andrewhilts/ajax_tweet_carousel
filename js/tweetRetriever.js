@@ -9,7 +9,7 @@ tweetRetriever = {
 			//alert("tweet");
     $.ajax({
           crossDomain:true,
-          url: "http://twitter.com/status/user_timeline/"+this.user+".json?count="+this.quantity+"&rpp=5",
+          url: tweetRetriever.url,
           type: 'GET',
       	  dataType: 'jsonp',
       	  timeout: 3000,
@@ -23,9 +23,38 @@ tweetRetriever = {
             tweetRetriever.oldTweets = tweetRetriever.newTweets;
             tweetRetriever.newTweets = [];
             tweetRetriever.newTweetIDs = [];
-            $.each(json,function(i,item) {
-              tweetRetriever.newTweets.push([item.id,item]);
-            });
+            if(tweetRetriever.queryType=="search"){
+							$.each(json.results,function(i,item) {
+	              tweetRetriever.newTweets.push([item.id,
+									{
+										id: item.id,
+										id_str: item.id_str,
+										text: item.text,
+										created_at: item.created_at,
+										user: {
+											name: item.from_user,
+											profile_image_url: item.profile_image_url
+										}
+									}
+				  			]);
+	            });
+						}
+						else{
+							$.each(json,function(i,item) {
+	              tweetRetriever.newTweets.push([item.id,
+									{
+										id: item.id,
+										id_str: item.id_str,
+										text: item.text,
+										created_at: item.created_at,
+										user: {
+											name: item.user.name,
+											profile_image_url: item.user.profile_image_url
+										}
+									}
+				  			]);
+	            });
+						}
             tweetRetriever.compareTweetQueries();
             if (!tweetRetriever.initialized){
               tweetRetriever.displayInit();
@@ -52,12 +81,19 @@ tweetRetriever = {
     this.tempo = params.tempo*1000;
 	this.timeLeft = params.tempo;
     this.quantity = params.tweets;
-    this.user = params.user;
+    this.queryString = params.queryString;
     this.container = params.container;
     this.skin =$(params.container)[0].className;
     this.controlRetweet = params.controlRetweet;
 	this.controlReply = params.controlReply;
 	this.controlFavorite = params.controlFavorite;
+	this.queryType = params.queryType;
+	if(params.queryType == "search"){
+		this.url = "http://search.twitter.com/search.json?q="+this.queryString+"&rpp="+this.quantity;
+	}
+	else{
+		this.url = "http://twitter.com/status/user_timeline/"+this.queryString+".json?count="+this.quantity;
+	}
     if(params.displayVert == null){
         this.displayVert = true;
     }

@@ -22,7 +22,8 @@ $(document).ready(function(){
   else {echo "vert=false;";}
   ?>
     tweetRetriever.init({
-        user: "InternetRadio",
+        queryString: "%23followfriday",
+        queryType: "search",
         tempo: 60,
         tweets: 10,
         controlReply: true,
