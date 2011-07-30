@@ -95,7 +95,7 @@ body {font-family:Arial; font-size:13px}
 }
 .jcarousel-skin-tweet-retriever .jcarousel-item span.real_time {display:none}
 
-.tweetControls {font-size:16px; position:absolute; visibility:hidden; float:right;clear:right; margin:25px 0 0 220px;}
+.tweetControls {font-size:16px; position:absolute; visibility:hidden; margin:3px 0 0 27px; width:21px; border-right:1px solid orange}
 
 li:hover .tweetControls {visibility:visible;}
 
@@ -103,15 +103,18 @@ li:hover .tweetControls {visibility:visible;}
 /* Fallback for web browsers that don't support RGBa */
 background-color: rgb(255, 255, 255);
 /* RGBa with 0.6 opacity */
-background-color: rgba(255, 255, 255, 0.6);
+background-color: rgba(255, 255, 255, 0.7);
 /* For IE 5.5 - 7*/
 filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
 /* For IE 8*/
 -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF)";
 }
+li:hover .tweetControls:hover {
+background-color:#ffffff;
+}
 
 
-.tweetControls a {display:inline-block; margin:0 5px; padding:0;}
+.tweetControls a {display:block; margin:0 3px; padding:0;}
 
 .tweetControls a i {display:inline-block; width:16px; height:16px; background:no-repeat url('../img/twitter-sprite.png');}
 

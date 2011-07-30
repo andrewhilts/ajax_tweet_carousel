@@ -24,37 +24,39 @@ tweetRetriever = {
             tweetRetriever.newTweets = [];
             tweetRetriever.newTweetIDs = [];
             if(tweetRetriever.queryType=="search"){
-							$.each(json.results,function(i,item) {
-	              tweetRetriever.newTweets.push([item.id,
-									{
-										id: item.id,
-										id_str: item.id_str,
-										text: item.text,
-										created_at: item.created_at,
-										user: {
-											name: item.from_user,
-											profile_image_url: item.profile_image_url
-										}
-									}
-				  			]);
+				$.each(json.results,function(i,item) {
+	              tweetRetriever.newTweets.push(
+	                [item.id,
+				    {
+					    id: item.id,
+					    id_str: item.id_str,
+					    text: item.text,
+					    created_at: item.created_at,
+					    user: {
+						    name: item.from_user,
+						    profile_image_url: item.profile_image_url
+					    }
+				    }
+  		            ]);
 	            });
-						}
-						else{
-							$.each(json,function(i,item) {
-	              tweetRetriever.newTweets.push([item.id,
-									{
-										id: item.id,
-										id_str: item.id_str,
-										text: item.text,
-										created_at: item.created_at,
-										user: {
-											name: item.user.name,
-											profile_image_url: item.user.profile_image_url
-										}
-									}
-				  			]);
+			}
+			else{
+			    $.each(json,function(i,item) {
+                    tweetRetriever.newTweets.push(
+                      [item.id,
+					  {
+						    id: item.id,
+						    id_str: item.id_str,
+						    text: item.text,
+						    created_at: item.created_at,
+						    user: {
+							    name: item.user.name,
+							    profile_image_url: item.user.profile_image_url
+						    }
+					  }
+			  		  ]);
 	            });
-						}
+			}
             tweetRetriever.compareTweetQueries();
             if (!tweetRetriever.initialized){
               tweetRetriever.displayInit();
@@ -196,9 +198,9 @@ tweetRetriever = {
 	tweetFormat: function(item){
 	  tweet = '<li>'+'<a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page">';
     tweet += '<img src="'+item.user.profile_image_url+'" alt="'+item.user.name+'&rsquo;s profile picture"/></a>'
+    tweet += '<div class="tweetControls"><a href="http://twitter.com/intent/tweet?in_reply_to='+item.id_str+'" class="tweetControl reply" title="Reply"><i></i></a><a href="http://twitter.com/intent/retweet?tweet_id='+item.id_str+'" class="tweetControl retweet" title="Retweet"><i></i></a><a href="http://twitter.com/intent/favorite?tweet_id='+item.id_str+'" class="tweetControl favorite" title="Favourite"><i></i></a></div>';
     tweet += '<span class="name"><a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page">'+item.user.name+'</a></span>';
     tweet += '<span class="date">'+tweet_time+'</span>';
-	tweet += '<div class="tweetControls"><a href="http://twitter.com/intent/tweet?in_reply_to='+item.id_str+'" class="tweetControl reply" title="Reply"><i></i></a><a href="http://twitter.com/intent/retweet?tweet_id='+item.id_str+'" class="tweetControl retweet" title="Retweet"><i></i></a><a href="http://twitter.com/intent/favorite?tweet_id='+item.id_str+'" class="tweetControl favorite" title="Favourite"><i></i></a></div>';
     tweet += '<p>'+tweetRetriever.textFormat(item.text)+'</p>';
     tweet += '<span class="real_time">'+item.created_at+'</span></li>';
     return tweet;
