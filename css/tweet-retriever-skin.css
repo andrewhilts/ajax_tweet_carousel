@@ -40,6 +40,18 @@ body {font-family:Arial; font-size:13px}
 .jcarousel-skin-tweet-retriever .jcarousel-item {
     /*width: 300px;
     height: 60px;*/
+
+}
+
+.jcarousel-skin-tweet-retriever .jcarousel-item:hover {
+    background
+ 
+}
+.jcarousel-next {
+    /*display:block;
+    width:50px;
+    height:50px;
+    background:blue;*/
 }
 
 .jcarousel-skin-tweet-retriever .jcarousel-item-horizontal {
