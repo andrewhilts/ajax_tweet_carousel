@@ -47,8 +47,8 @@ $(document).ready(function(){
   <div id="wrapper">
   <h1>Ajax Tweet Carousel</h1>
       <aside><a href="https://github.com/andrewhilts/ajax_tweet_carousel" title="Fork me on Github!"><img src="https://github.com/images/modules/dashboard/bootcamp/octocat_fork.png" alt="Fork me on Github!">Fork me on Github</a></aside>
-      <p>The default query search is for &ldquo;#obama&rdquo;, a hashtag that is consistently popular (so the dynamic refreshing of the list is made apparent). By default, the system queries Twitter's API every 2 minutes for the latest 5 tweets (We can't query more than 100 times an hour). 
-      <p>This system will check to see which of the currently displayed tweets are different from the latest ones, and replace those that are no longer in the latest 5 with the new tweets. 
+      <p>The default query search is for &ldquo;#obama&rdquo;, a hashtag that is consistently popular (so the dynamic refreshing of the list is made apparent). I would recommend the system query Twitter's API every 2 minutes for the latest <em style="font-family:serif; font-size:1.15em;">n</em> tweets (Twitter allows each IP to query no more than 100 times an hour). 
+      <p>This system will check to see which of the currently displayed tweets are different from the latest ones, and replace those that are no longer in the latest <em style="font-family:serif; font-size:1.15em;">n</em> with the new tweets. 
   
       <h2>Latest Tweets from <em>InternetRadio</em></h2>
   
