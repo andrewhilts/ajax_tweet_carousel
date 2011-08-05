@@ -188,7 +188,7 @@ tweetRetriever = {
 		var exp = /[\@]+([A-Za-z0-9-_]+)/ig;
 		texto = texto.replace(exp,"<a href='http://twitter.com/$1' class='profileLink'>@$1</a>"); 
 		var exp = /[\#]+([A-Za-z0-9-_]+)/ig;
-		texto = texto.replace(exp,"<a href='http://twitter.com/search?q=%23#$1'' class='hashLink'>#$1</a>"); 
+		texto = texto.replace(exp,"<a href='http://twitter.com/search?q=%23$1'' class='hashLink'>#$1</a>"); 
 		// make it bold
 		return texto;
 	},
