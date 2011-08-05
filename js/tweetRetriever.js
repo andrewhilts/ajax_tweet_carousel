@@ -24,41 +24,44 @@ tweetRetriever = {
             tweetRetriever.newTweets = [];
             tweetRetriever.newTweetIDs = [];
             if(tweetRetriever.queryType=="search"){
-							$.each(json.results,function(i,item) {
-	              tweetRetriever.newTweets.push([item.id,
-									{
-										id: item.id,
-										id_str: item.id_str,
-										text: item.text,
-										created_at: item.created_at,
-										user: {
-											name: item.from_user,
-											profile_image_url: item.profile_image_url
-										}
-									}
-				  			]);
+				$.each(json.results,function(i,item) {
+	              tweetRetriever.newTweets.push(
+	                [item.id,
+				    {
+					    id: item.id,
+					    id_str: item.id_str,
+					    text: item.text,
+					    created_at: item.created_at,
+					    user: {
+						    name: item.from_user,
+						    profile_image_url: item.profile_image_url
+					    }
+				    }
+  		            ]);
 	            });
-						}
-						else{
-							$.each(json,function(i,item) {
-	              tweetRetriever.newTweets.push([item.id,
-									{
-										id: item.id,
-										id_str: item.id_str,
-										text: item.text,
-										created_at: item.created_at,
-										user: {
-											name: item.user.name,
-											profile_image_url: item.user.profile_image_url
-										}
-									}
-				  			]);
+			}
+			else{
+			    $.each(json,function(i,item) {
+                    tweetRetriever.newTweets.push(
+                      [item.id,
+					  {
+						    id: item.id,
+						    id_str: item.id_str,
+						    text: item.text,
+						    created_at: item.created_at,
+						    user: {
+							    name: item.user.name,
+							    profile_image_url: item.user.profile_image_url
+						    }
+					  }
+			  		  ]);
 	            });
-						}
+			}
             tweetRetriever.compareTweetQueries();
             if (!tweetRetriever.initialized){
               tweetRetriever.displayInit();
             }
+            //$('.jcarousel-prev').click();
           }   
         });
     this.update();
@@ -68,11 +71,15 @@ tweetRetriever = {
 	tweetRetriever.timeLeft--;
 	if(tweetRetriever.timeLeft>0){
 		setTimeout("tweetRetriever.update()",1000)
-		$('#status').children('#countdown').html("New tweets in "+tweetRetriever.timeLeft);
+		if(tweetRetriever.displayRequestStatus === true){
+		    $('#status').children('#countdown').html("New tweets in "+tweetRetriever.timeLeft);
+		}
 	}
 	else{
 		tweetRetriever.timeLeft = tweetRetriever.tempo/1000;
-		$('#status').children('#countdown').html("New tweets in "+tweetRetriever.timeLeft);
+		if(tweetRetriever.displayRequestStatus === true){
+		    $('#status').children('#countdown').html("New tweets in "+tweetRetriever.timeLeft);
+		}
 		tweetRetriever.query();
 	}
   },
@@ -83,10 +90,15 @@ tweetRetriever = {
     this.quantity = params.tweets;
     this.queryString = params.queryString;
     this.container = params.container;
+    this.auto = params.auto;
     this.skin =$(params.container)[0].className;
     this.controlRetweet = params.controlRetweet;
 	this.controlReply = params.controlReply;
 	this.controlFavorite = params.controlFavorite;
+	this.displayRequestStatus = params.displayRequestStatus;
+	if(this.displayRequestStatus === false){
+	    $('#status').hide();
+	}
 	this.queryType = params.queryType;
 	if(params.queryType == "search"){
 		this.url = "http://search.twitter.com/search.json?q="+this.queryString+"&rpp="+this.quantity;
@@ -147,8 +159,9 @@ tweetRetriever = {
     });
     this.initialized = true;
     displayVert = this.displayVert;
+    auto = this.auto;
     $(tweetRetriever.container).jcarousel({
-      auto: 5,
+      auto: auto,
       animation:1000,
       scroll: 1,
       wrap: 'circular',
@@ -158,9 +171,9 @@ tweetRetriever = {
       itemFirstOutCallback: {
 	      onBeforeAnimation: callback1
 	    },
-	    itemLastInCallback: {
+	  itemLastInCallback: {
 	      onBeforeAnimation: callback2
-	    }
+	  }
     });  
   },
   //Compares the old and new tweet sets, to find new ones to place in the addTweets array
@@ -196,9 +209,17 @@ tweetRetriever = {
 	tweetFormat: function(item){
 	  tweet = '<li>'+'<a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page">';
     tweet += '<img src="'+item.user.profile_image_url+'" alt="'+item.user.name+'&rsquo;s profile picture"/></a>'
+    if(tweetRetriever.controlRetweet === true || tweetRetriever.controlReply === true || tweetRetriever.controlFavorite === true){
+        tweet += '<div class="tweetControls">';
+        
+        if(tweetRetriever.controlReply === true){tweet += '<a href="http://twitter.com/intent/tweet?in_reply_to='+item.id_str+'" class="tweetControl reply" title="Reply"><i></i></a>';}
+        if(tweetRetriever.controlRetweet === true){tweet += '<a href="http://twitter.com/intent/retweet?tweet_id='+item.id_str+'" class="tweetControl retweet" title="Retweet"><i></i></a>';}
+        if(tweetRetriever.controlFavorite === true){tweet += '<a href="http://twitter.com/intent/favorite?tweet_id='+item.id_str+'" class="tweetControl favorite" title="Favourite"><i></i></a>';}
+        
+        tweet += '</div>';
+    }
     tweet += '<span class="name"><a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page">'+item.user.name+'</a></span>';
     tweet += '<span class="date">'+tweet_time+'</span>';
-	tweet += '<div class="tweetControls"><a href="http://twitter.com/intent/tweet?in_reply_to='+item.id_str+'" class="tweetControl reply" title="Reply"><i></i></a><a href="http://twitter.com/intent/retweet?tweet_id='+item.id_str+'" class="tweetControl retweet" title="Retweet"><i></i></a><a href="http://twitter.com/intent/favorite?tweet_id='+item.id_str+'" class="tweetControl favorite" title="Favourite"><i></i></a></div>';
     tweet += '<p>'+tweetRetriever.textFormat(item.text)+'</p>';
     tweet += '<span class="real_time">'+item.created_at+'</span></li>';
     return tweet;
@@ -312,4 +333,5 @@ function mycarousel_initCallback(carousel)
     }, function() {
         carousel.startAuto();
     });
+    function tweetnext() {carousel.next()};
 };
