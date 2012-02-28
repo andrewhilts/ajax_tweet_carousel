@@ -198,10 +198,14 @@ tweetRetriever = {
 		//make links
 		var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
 		texto = texto.replace(exp,"<a href='$1' class='extLink'>$1</a>"); 
-		var exp = /[\@]+([A-Za-z0-9-_]+)/ig;
-		texto = texto.replace(exp,"<a href='http://twitter.com/$1' class='profileLink'>@$1</a>"); 
-		var exp = /[\#]+([A-Za-z0-9-_]+)/ig;
-		texto = texto.replace(exp,"<a href='http://twitter.com/search?q=%23$1'' class='hashLink'>#$1</a>"); 
+		var exp = /[\@]+([A-Za-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF0-9-_]+)/ig;
+		uri = encodeURIComponent(texto.match(exp));
+		uri = uri.substring(3);
+		texto = texto.replace(exp,"<a href='http://twitter.com/"+uri+"' class='profileLink'>@$1</a>"); 
+		var exp = /[\#]+([A-Za-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF0-9-_]+)/ig;
+		uri = encodeURIComponent(texto.match(exp));
+		uri = uri.substring(3);
+		texto = texto.replace(exp,"<a href='http://twitter.com/search?q=%23"+uri+"' class='hashLink'>#$1</a>");
 		// make it bold
 		return texto;
 	},
