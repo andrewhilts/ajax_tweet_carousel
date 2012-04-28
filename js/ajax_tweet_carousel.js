@@ -53,7 +53,7 @@ TweetCarousel.prototype.query = function() {
       }
     }.bind(this),
     success:  function(json){
-      if(this.displayRequestStatus !== false){
+      if(this.displayRequestStatus && this.statusElement !=="undefined"){
       this.statusElement.children('span').get(0).innerHTML = "";
       }
       this.oldTweets = this.newTweets;
@@ -146,55 +146,57 @@ TweetCarousel.prototype.updateTweetTimes = function(){
 
 TweetCarousel.prototype.stylize = function(params,jcarouselParams){
   
-  if(jcarouselParams.vertical == true){
-    this.displayVert = true;
-  }
-  else{
-    this.displayVert = false;
-  }
-  totalMarginSpace = params.itemMargin*(params.displayItemsNum-1);
-
-  if(params.itemWidth !== null && params.itemHeight !== null){
-    if(this.displayVert === true){
-      containerHeight = params.itemHeight*params.displayItemsNum+totalMarginSpace;
-      containerWidth = params.itemWidth;
-      containerClass = "jcarousel-container-vertical";
-      clipClass = "jcarousel-clip-vertical";
-      itemClass = "jcarousel-item-vertical";
+  if(jcarouselParams){
+    if(jcarouselParams.vertical == true){
+      this.displayVert = true;
     }
     else{
-      containerHeight = params.itemHeight;
-      containerWidth = params.itemWidth*params.displayItemsNum+totalMarginSpace;
-      containerClass = "jcarousel-container-horizontal";
-      clipClass = "jcarousel-clip-horizontal";
-      itemClass = "jcarousel-item-horizontal";
+      this.displayVert = false;
     }
+    totalMarginSpace = params.itemMargin*(params.displayItemsNum-1);
 
-    selector = "."+this.skin+" ."+containerClass+", ";
-    selector += "."+this.skin+" ."+clipClass;
-    rule = "width:"+containerWidth+"px; "
-    rule += " height:"+containerHeight+"px;"
-    this.createCSS(selector,rule);
+    if(params.itemWidth !== null && params.itemHeight !== null){
+      if(this.displayVert === true){
+        containerHeight = params.itemHeight*params.displayItemsNum+totalMarginSpace;
+        containerWidth = params.itemWidth;
+        containerClass = "jcarousel-container-vertical";
+        clipClass = "jcarousel-clip-vertical";
+        itemClass = "jcarousel-item-vertical";
+      }
+      else{
+        containerHeight = params.itemHeight;
+        containerWidth = params.itemWidth*params.displayItemsNum+totalMarginSpace;
+        containerClass = "jcarousel-container-horizontal";
+        clipClass = "jcarousel-clip-horizontal";
+        itemClass = "jcarousel-item-horizontal";
+      }
 
-    selector = "."+this.skin+" .jcarousel-item";
-    rule = "width:"+params.itemWidth+"px; "
-    rule += " height:"+params.Height+"px;"
-    this.createCSS(selector,rule);
-     
-    selector = "."+this.skin+" ."+itemClass;
-    if(this.displayVert === true){
-      rule = "margin-bottom:"+params.itemMargin+"px;";
+      selector = "."+this.skin+" ."+containerClass+", ";
+      selector += "."+this.skin+" ."+clipClass;
+      rule = "width:"+containerWidth+"px; "
+      rule += " height:"+containerHeight+"px;"
+      this.createCSS(selector,rule);
+
+      selector = "."+this.skin+" .jcarousel-item";
+      rule = "width:"+params.itemWidth+"px; "
+      rule += " height:"+params.Height+"px;"
+      this.createCSS(selector,rule);
+       
+      selector = "."+this.skin+" ."+itemClass;
+      if(this.displayVert === true){
+        rule = "margin-bottom:"+params.itemMargin+"px;";
+      }
+      else{
+        rule = "margin-right:"+params.itemMargin+"px;";
+        rule += "margin-left:0";
+      }
+      this.createCSS(selector,rule);
     }
-    else{
-      rule = "margin-right:"+params.itemMargin+"px;";
-      rule += "margin-left:0";
-    }
-    this.createCSS(selector,rule);
   }
   this.displayRequestStatus = params.displayRequestStatus;
-  if(this.displayRequestStatus !== false){
+  if(this.displayRequestStatus){
     this.statusElementId = params.container+"_status";
-    statusElement = "<div id=\""+this.statusElementId+"\"><span>Loading...</span><span>New tweets in </span></div>";
+    statusElement = "<div id=\""+this.statusElementId+"\" class=\"tweet_status\"><span>Loading...</span><span>New tweets in </span></div>";
     this.container.after(statusElement);
     this.statusElement = $("#"+this.statusElementId);
   }
