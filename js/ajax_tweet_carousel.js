@@ -160,7 +160,6 @@ TweetCarousel.prototype.displayInit = function(){
   }.bind(this));
   this.addTweets = [];
   this.initialized = true;
-  
   this.fire("displayInit");
 }
 
@@ -254,57 +253,7 @@ TweetCarousel.prototype.textFormat = function(texto){
   return texto;
 };
 
-TweetCarousel.prototype.carouselBefore = function(carousel, li_object, index, state){
-  if(this.carouselItemFadeIn !== false){
-    $(li_object).fadeTo(this.animationTime,0.01);
-  }
-}
-TweetCarousel.prototype.carouselAfter = function(carousel, li_object, index, state){
-  //initial last visible item doesn't do the fade IN animation
-  if(state!=="init" && this.carouselItemFadeIn !== false){
-    $(li_object).fadeTo(1,0.01).delay(this.animationTime).fadeTo(this.animationTime,1);
-  }
-  window.console.log(this.addTweets.length + "new tweets remain");
-  if(this.addTweets.length > 0){
-      properIndex = carousel.index(index);
-      if(properIndex === 1){
-        //now the update can begin, at the first carousel item (replace with latest tweet)
-        this.carouselUpdateStarted = true;
-      }
-      if(this.carouselUpdateStarted){
-        item = this.addTweets[0];
-        tweet_time = this.timeAgo(item.created_at);
-        tweet = this.tweetFormat(item);
-        //add newest tweet to carousel
-        carousel.add(properIndex,tweet);
-        //remove newest tweet from array
-        this.addTweets.splice(0,1);
-      }
-  }
-  else{
-    this.carouselUpdateStarted = false;
-  }
-  }
-  var index = "";
-TweetCarousel.prototype.carouselDisplay = function(carousel,state){
-  if (state == 'init') { 
-    orig_size = carousel.size();
-    index = orig_size;
-  }
-  else{
-    this.updateTweetTimes();
-  }
-}
-TweetCarousel.prototype.carouselInit = function(carousel)
-{
-    // Pause autoscrolling if the user moves with the cursor over the clip.
-    carousel.clip.hover(function() {
-        carousel.stopAuto();
-    }, function() {
-        carousel.startAuto();
-    });
-    function tweetnext() {carousel.next()};
-};
+
 
 TweetCarousel.prototype.createCSS = function(selector, declaration) {
   //Copyright 2005, 2006 Bobby van der Sluis
