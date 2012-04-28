@@ -1,55 +1,3 @@
-//Copyright (c) 2010 Nicholas C. Zakas. All rights reserved.
-//MIT License
-
-function EventTarget(){
-    this._listeners = {};
-}
-
-EventTarget.prototype = {
-
-    constructor: EventTarget,
-
-    addListener: function(type, listener){
-        if (typeof this._listeners[type] == "undefined"){
-            this._listeners[type] = [];
-        }
-
-        this._listeners[type].push(listener);
-    },
-
-    fire: function(event){
-        if (typeof event == "string"){
-            event = { type: event };
-        }
-        if (!event.target){
-            event.target = this;
-        }
-
-        if (!event.type){  //falsy
-            throw new Error("Event object missing 'type' property.");
-        }
-
-        if (this._listeners[event.type] instanceof Array){
-            var listeners = this._listeners[event.type];
-            for (var i=0, len=listeners.length; i < len; i++){
-                listeners[i].call(this, event);
-            }
-        }
-    },
-
-    removeListener: function(type, listener){
-        if (this._listeners[type] instanceof Array){
-            var listeners = this._listeners[type];
-            for (var i=0, len=listeners.length; i < len; i++){
-                if (listeners[i] === listener){
-                    listeners.splice(i, 1);
-                    break;
-                }
-            }
-        }
-    }
-};
-
 function TweetCarousel(params,jcarouselParams){
   EventTarget.call(this);
   this.newTweets = [];
@@ -72,15 +20,10 @@ function TweetCarousel(params,jcarouselParams){
   else{
     this.url = "http://twitter.com/status/user_timeline/"+this.queryString+".json?count="+this.quantity;
   }
-  if(typeof jcarouselParams !== "undefined"){
-    this.jcarouselParams = jcarouselParams;
-    this.stylize(params,jcarouselParams);
-  }
-  else{
-    this.stylize(params);
-  }
+  this.stylize(params);
 }
 
+//Inherit event model from eventtarget.js
 TweetCarousel.prototype = new EventTarget();
 
 TweetCarousel.prototype.update = function (){
@@ -200,54 +143,6 @@ TweetCarousel.prototype.updateTweetTimes = function(){
 }
 
 TweetCarousel.prototype.stylize = function(params,jcarouselParams){
-  
-  if(jcarouselParams){
-    if(jcarouselParams.vertical == true){
-      this.displayVert = true;
-    }
-    else{
-      this.displayVert = false;
-    }
-    totalMarginSpace = params.itemMargin*(params.displayItemsNum-1);
-
-    if(params.itemWidth !== null && params.itemHeight !== null){
-      if(this.displayVert === true){
-        containerHeight = params.itemHeight*params.displayItemsNum+totalMarginSpace;
-        containerWidth = params.itemWidth;
-        containerClass = "jcarousel-container-vertical";
-        clipClass = "jcarousel-clip-vertical";
-        itemClass = "jcarousel-item-vertical";
-      }
-      else{
-        containerHeight = params.itemHeight;
-        containerWidth = params.itemWidth*params.displayItemsNum+totalMarginSpace;
-        containerClass = "jcarousel-container-horizontal";
-        clipClass = "jcarousel-clip-horizontal";
-        itemClass = "jcarousel-item-horizontal";
-      }
-
-      selector = "."+this.skin+" ."+containerClass+", ";
-      selector += "."+this.skin+" ."+clipClass;
-      rule = "width:"+containerWidth+"px; "
-      rule += " height:"+containerHeight+"px;"
-      this.createCSS(selector,rule);
-
-      selector = "."+this.skin+" .jcarousel-item";
-      rule = "width:"+params.itemWidth+"px; "
-      rule += " height:"+params.Height+"px;"
-      this.createCSS(selector,rule);
-       
-      selector = "."+this.skin+" ."+itemClass;
-      if(this.displayVert === true){
-        rule = "margin-bottom:"+params.itemMargin+"px;";
-      }
-      else{
-        rule = "margin-right:"+params.itemMargin+"px;";
-        rule += "margin-left:0";
-      }
-      this.createCSS(selector,rule);
-    }
-  }
   this.displayRequestStatus = params.displayRequestStatus;
   if(this.displayRequestStatus){
     this.statusElementId = params.container+"_status";
