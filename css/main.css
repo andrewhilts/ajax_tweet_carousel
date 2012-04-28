@@ -53,3 +53,21 @@ aside {float:right; width:168px; margin:0 10px; border:1px solid #ccc}
 aside a {text-decoration:none; display:block; padding:5px}
 aside a:hover {background:#EF9A52}
 /*End Github Style*/
+
+.grey .jcarousel-container {
+    background:none;
+    border:none;
+    border-radius:0;
+    height:320px;
+}
+
+.grey .jcarousel-clip-vertical {
+    width:290px;
+    height:320px;
+}
+.grey .jcarousel-item {
+    border:1px solid #ccc;
+    background: #efe;
+    padding:5px 6px;
+    width:270px;
+}
