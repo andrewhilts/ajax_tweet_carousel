@@ -160,21 +160,7 @@ TweetCarousel.prototype.displayInit = function(){
   }.bind(this));
   this.addTweets = [];
   this.initialized = true;
-  if(typeof this.jcarouselParams !== "undefined"){
-    this.animationTime = this.jcarouselParams.animation/2;
-    this.jcarouselParams.initCallback = this.carouselInit.bind(this);
-    this.jcarouselParams.itemLoadCallback = this.carouselDisplay.bind(this);
-    this.jcarouselParams.itemFirstOutCallback = {
-        onBeforeAnimation: this.carouselBefore.bind(this)
-      };
-    this.jcarouselParams.itemLastInCallback = {
-          onBeforeAnimation: this.carouselAfter.bind(this)
-    };
-    this.carouselItemFadeIn = this.jcarouselParams.itemFadeIn;
-    delete this.jcarouselParams.itemFadeIn;
-    this.container.jcarousel(this.jcarouselParams);
-    this.carouselUpdateStarted = false;
-  }
+  
   this.fire("displayInit");
 }
 
