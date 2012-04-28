@@ -252,3 +252,26 @@ TweetCarousel.prototype.textFormat = function(texto){
   // make it bold
   return texto;
 };
+
+TweetCarousel.prototype.carouselUpdate = function(carousel, li_object, index, state){
+  window.console.log(this.addTweets.length + "new tweets remain");
+  if(this.addTweets.length > 0){
+      properIndex = carousel.index(index);
+      if(properIndex === 1){
+        //now the update can begin, at the first carousel item (replace with latest tweet)
+        this.carouselUpdateStarted = true;
+      }
+      if(this.carouselUpdateStarted){
+        item = this.addTweets[0];
+        tweet_time = this.timeAgo(item.created_at);
+        tweet = this.tweetFormat(item);
+        //add newest tweet to carousel
+        carousel.add(properIndex,tweet);
+        //remove newest tweet from array
+        this.addTweets.splice(0,1);
+      }
+  }
+  else{
+    this.carouselUpdateStarted = false;
+  }
+}
