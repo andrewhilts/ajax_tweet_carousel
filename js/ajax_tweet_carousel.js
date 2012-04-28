@@ -1,4 +1,4 @@
-function TweetCarousel(params,jcarouselParams){
+function TweetCarousel(params){
   EventTarget.call(this);
   this.newTweets = [];
   this.oldTweets = [];
@@ -142,7 +142,7 @@ TweetCarousel.prototype.updateTweetTimes = function(){
   }
 }
 
-TweetCarousel.prototype.stylize = function(params,jcarouselParams){
+TweetCarousel.prototype.stylize = function(params){
   this.displayRequestStatus = params.displayRequestStatus;
   if(this.displayRequestStatus){
     this.statusElementId = params.container+"_status";
