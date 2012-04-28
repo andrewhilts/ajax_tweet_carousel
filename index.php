@@ -7,6 +7,7 @@
 </script>
 <script type="text/javascript" src="js/jquery.jcarousel.js"></script>
 <script type="text/javascript" src="js/jquery.timers.js"></script>
+<script type="text/javascript" src="js/eventtarget.js"></script>
 <script type="text/javascript" src="js/ajax_tweet_carousel.js"></script>
 <!--
   jCarousel skin stylesheet
@@ -14,65 +15,123 @@
 <link rel="stylesheet" type="text/css" href="css/tweet-retriever-skin.css" />
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <script type="text/javascript">
+function carouselBefore (carousel, li_object, index, state){
+  $(li_object).fadeTo(this.animationTime,0.01);
+}
+function carouselAfter(carousel, li_object, index, state){
+  if(state!=="init"){
+    $(li_object).fadeTo(1,0.01).delay(this.animationTime/2).fadeTo(this.animationTime,1);
+  }
+}
 $(document).ready(function(){
-    myTweets = new TweetCarousel({
-        queryString: "%23HardestThingsInLife",
-        //If you want to display a single user's tweets, change queryType to "user". "search" is possible for some users; not all.
-        queryType: "search",
-        tempo: 40,
-        tweets: 8,
-        controlReply: true,
-        controlRetweet: true,
-        controlFavorite: true,
-        displayRequestStatus: true,
-        container: "tweets",
-        auto: 5,
-        //the below only sets the css height of the tweet container to be n*itemHeight+itemMargin*(n-1). If displayVert is false, use width/hoz instead of height/vert. ItemMargin only assigns a bottom or right margin to the item, depending on displayVert. Otherwise, delete these last params and set everything with CSS (by default, commented out in the css file)
-        displayItemsNum: 3,
-        itemWidth: 300,
-        itemHeight: 60,
-        itemMargin:10
-    },
-    {
+  myTweets = new TweetCarousel({
+    queryString: "%23twitter",
+    //If you want to display a single user's tweets, change queryType to "user". "search" is possible for some users; not all.
+    queryType: "search",
+    tempo: 30,
+    tweets: 8,
+    controlReply: true,
+    controlRetweet: true,
+    controlFavorite: true,
+    displayRequestStatus: false,
+    container: "tweets"
+  }
+  );
+
+  myTweets2 = new TweetCarousel({
+    queryString: "%23drupal",
+    //If you want to display a single user's tweets, change queryType to "user". "search" is possible for some users; not all.
+    queryType: "search",
+    tempo: 300,
+    tweets: 16,
+    controlReply: true,
+    controlRetweet: true,
+    controlFavorite: true,
+    displayRequestStatus: false,
+    container: "tweets2",
+  }
+  );
+
+myTweets3 = new TweetCarousel({
+    queryString: "meteor",
+    //If you want to display a single user's tweets, change queryType to "user". "search" is possible for some users; not all.
+    queryType: "search",
+    tempo: 30,
+    tweets: 16,
+    controlReply: true,
+    controlRetweet: true,
+    controlFavorite: true,
+    displayRequestStatus: false,
+    container: "tweets3"
+  }
+  );
+
+myTweets4 = new TweetCarousel({
+    queryString: "github",
+    //If you want to display a single user's tweets, change queryType to "user". "search" is possible for some users; not all.
+    queryType: "search",
+    tempo: 300,
+    tweets: 16,
+    controlReply: true,
+    controlRetweet: true,
+    controlFavorite: true,
+    displayRequestStatus: false,
+    container: "tweets4"
+  });
+
+  myTweets.query();
+  // myTweets2.query();
+  //myTweets3.query();
+  // myTweets4.query();
+
+  myTweets.addListener("displayInit",function(){
+    this.animationTime = 500;
+    params = {
       auto: 1,
-      animation:500,
+      animation:700,
       scroll: 1,
       wrap: 'circular',
       vertical:false,
+      itemFirstOutCallback : {
+        onBeforeAnimation: carouselBefore.bind(this),
+      },
+      itemLastInCallback : {
+        onBeforeAnimation: carouselAfter.bind(this),
+        onAfterAnimation: this.carouselUpdate.bind(this)
+      }
+    };
+    this.container.jcarousel(params);
+  });
+
+  myTweets2.addListener("displayInit",function(){
+    this.container.jcarousel({
+      auto: 5,
+      animation:1000,
+      scroll: 1,
+      wrap: 'circular',
+      vertical:true,
       itemFadeIn: true
-    }
-    );
+    });
+  });
 
-    // myTweets2 = new TweetCarousel({
-    //     queryString: "%23drupal",
-    //     //If you want to display a single user's tweets, change queryType to "user". "search" is possible for some users; not all.
-    //     queryType: "search",
-    //     tempo: 120,
-    //     tweets: 8,
-    //     controlReply: true,
-    //     controlRetweet: true,
-    //     controlFavorite: true,
-    //     displayRequestStatus: true,
-    //     container: "tweets2",
-    //     auto: 5,
-    //     //the below only sets the css height of the tweet container to be n*itemHeight+itemMargin*(n-1). If displayVert is false, use width/hoz instead of height/vert. ItemMargin only assigns a bottom or right margin to the item, depending on displayVert. Otherwise, delete these last params and set everything with CSS (by default, commented out in the css file)
-    //     displayItemsNum: 4,
-    //     itemWidth: 300,
-    //     itemHeight: 53,
-    //     itemMargin:10
-    // },
-    // {
-    //   auto: 5,
-    //   animation:1000,
-    //   scroll: 1,
-    //   wrap: 'circular',
-    //   vertical:true,
-    //   itemFadeIn: false
-    // }
-    // );
-
-  myTweets.query();
-//  myTweets2.query();   
+  myTweets3.addListener("displayInit",function(){
+    this.animationTime = 500;
+    params = {
+      auto: 3,
+      animation:this.animationTime,
+      scroll: 1,
+      wrap: 'circular',
+      vertical:true,
+      itemFirstOutCallback : {
+        onBeforeAnimation: carouselBefore.bind(this),
+      },
+      itemLastInCallback : {
+        onBeforeAnimation: carouselAfter.bind(this),
+        onAfterAnimation: this.carouselUpdate.bind(this)
+      }
+    };
+    this.container.jcarousel(params);
+  });
 });
 </script>
   </head>
@@ -85,7 +144,11 @@ $(document).ready(function(){
   <!-- Ensure your skin's classname begins with jcarousel-skin- !-->
   <ul id="tweets" class="jcarousel-skin-tweet-retriever"></ul>
 <hr>
+<div class="grey" style="float:left">
   <ul id="tweets2" class="jcarousel-skin-tweet-retriever"></ul>
+</div>
+  <ul id="tweets3" class="jcarousel-skin-tweet-retriever"></ul>
+  <ul id="tweets4" class="jcarousel-skin-tweet-retriever"></ul>
   <!-- End Tweet Carousel HTML tags !-->
   
 
