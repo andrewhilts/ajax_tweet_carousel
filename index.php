@@ -28,7 +28,7 @@ $(document).ready(function(){
     queryString: "%23twitter",
     //If you want to display a single user's tweets, change queryType to "user". "search" is possible for some users; not all.
     queryType: "search",
-    tempo: 30,
+    tempo: 10,
     tweets: 8,
     controlReply: true,
     controlRetweet: true,
@@ -80,65 +80,41 @@ myTweets4 = new TweetCarousel({
   });
 
   myTweets.query();
+  // myTweets.paintTweet = function(tweet,e){
+  //        $(e).queue(function(){
+  //             $(this).fadeTo(200,0.01).html(tweet).fadeTo(200,1);
+  //         });
+  //     }
   // myTweets2.query();
   //myTweets3.query();
   // myTweets4.query();
 
-  myTweets.addListener("displayInit",function(){
-    this.animationTime = 500;
-    params = {
-      auto: 1,
-      animation:700,
-      scroll: 1,
-      wrap: 'circular',
-      vertical:false,
-      itemFirstOutCallback : {
-        onBeforeAnimation: carouselBefore.bind(this),
-      },
-      itemLastInCallback : {
-        onBeforeAnimation: carouselAfter.bind(this),
-        onAfterAnimation: this.carouselUpdate.bind(this)
-      }
-    };
-    this.container.jcarousel(params);
-  });
+  // myTweets.addListener("displayInit",function(){
+  //     this.animationTime = 500;
+  //     params = {
+  //       auto: 1,
+  //       animation:700,
+  //       scroll: 1,
+  //       wrap: 'circular',
+  //       vertical:false,
+  //       itemFirstOutCallback : {
+  //         onBeforeAnimation: carouselBefore.bind(this),
+  //       },
+  //       itemLastInCallback : {
+  //         onBeforeAnimation: carouselAfter.bind(this),
+  //         onAfterAnimation: this.carouselUpdate.bind(this)
+  //       }
+  //     };
+  //     this.container.jcarousel(params);
+  //   });
 
-  myTweets2.addListener("displayInit",function(){
-    this.container.jcarousel({
-      auto: 5,
-      animation:1000,
-      scroll: 1,
-      wrap: 'circular',
-      vertical:true,
-      itemFadeIn: true
-    });
-  });
-
-  myTweets3.addListener("displayInit",function(){
-    this.animationTime = 500;
-    params = {
-      auto: 3,
-      animation:this.animationTime,
-      scroll: 1,
-      wrap: 'circular',
-      vertical:true,
-      itemFirstOutCallback : {
-        onBeforeAnimation: carouselBefore.bind(this),
-      },
-      itemLastInCallback : {
-        onBeforeAnimation: carouselAfter.bind(this),
-        onAfterAnimation: this.carouselUpdate.bind(this)
-      }
-    };
-    this.container.jcarousel(params);
-  });
 });
 </script>
   </head>
   <body>
   <div id="wrapper">
   <h1>Ajax Tweet Carousel</h1>
-  
+
   <!-- Begin Tweet Carousel HTML tags !-->
   <!-- the status div is automatically hidden if you set displayRequestStatus to false !-->
   <!-- Ensure your skin's classname begins with jcarousel-skin- !-->
@@ -150,7 +126,7 @@ myTweets4 = new TweetCarousel({
   <ul id="tweets3" class="jcarousel-skin-tweet-retriever"></ul>
   <ul id="tweets4" class="jcarousel-skin-tweet-retriever"></ul>
   <!-- End Tweet Carousel HTML tags !-->
-  
+
 
   </body>
 </html>

@@ -21,6 +21,9 @@ function TweetCarousel(params){
     this.url = "http://twitter.com/status/user_timeline/"+this.queryString+".json?count="+this.quantity;
   }
   this.stylize(params);
+  this.addListener("update",function(){
+    this.paintNewTweets();
+  })
 }
 
 //Inherit event model from eventtarget.js
@@ -68,9 +71,12 @@ TweetCarousel.prototype.query = function() {
       else{
         //while we have new tweets, we haven't started updating the carousel
         this.carouselUpdateStarted = false;
+
+        //Fire update event
+        this.fire("update");
       }
       //$('.jcarousel-prev').click();
-    }.bind(this)   
+    }.bind(this)
   });
   this.update();
 }
@@ -156,7 +162,9 @@ TweetCarousel.prototype.displayInit = function(){
   $.each(this.addTweets,function(i,item){
     tweet_time = this.timeAgo(item.created_at);
     tweet = this.tweetFormat(item);
-    this.container.prepend(tweet);
+    this.container.prepend("<li></li>");
+    e = this.container.children()[0];
+    this.paintTweet(tweet,e);
   }.bind(this));
   this.addTweets = [];
   this.initialized = true;
@@ -218,21 +226,21 @@ TweetCarousel.prototype.timeAgo = function(dateString) {
 };
 
 TweetCarousel.prototype.tweetFormat = function(item){
-  tweet = '<li>'+'<a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page">';
+  tweet = '<a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page">';
   tweet += '<img src="'+item.user.profile_image_url+'" alt="'+item.user.name+'&rsquo;s profile picture"/></a>'
   if(this.controlRetweet === true || this.controlReply === true || this.controlFavorite === true){
       tweet += '<div class="tweetControls">';
-      
+
       if(this.controlReply === true){tweet += '<a href="http://twitter.com/intent/tweet?in_reply_to='+item.id_str+'" class="tweetControl reply" title="Reply"><i></i></a>';}
       if(this.controlRetweet === true){tweet += '<a href="http://twitter.com/intent/retweet?tweet_id='+item.id_str+'" class="tweetControl retweet" title="Retweet"><i></i></a>';}
       if(this.controlFavorite === true){tweet += '<a href="http://twitter.com/intent/favorite?tweet_id='+item.id_str+'" class="tweetControl favorite" title="Favourite"><i></i></a>';}
-      
+
       tweet += '</div>';
   }
   tweet += '<span class="name"><a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page">'+item.user.name+'</a></span>';
   tweet += '<span class="date">'+tweet_time+'</span>';
   tweet += '<p>'+this.textFormat(item.text)+'</p>';
-  tweet += '<span class="real_time">'+item.created_at+'</span></li>';
+  tweet += '<span class="real_time">'+item.created_at+'</span>';
   return tweet;
 };
 
@@ -240,11 +248,11 @@ TweetCarousel.prototype.textFormat = function(texto){
   //This from Juitter
   //make links
   var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-  texto = texto.replace(exp,"<a href='$1' class='extLink'>$1</a>"); 
+  texto = texto.replace(exp,"<a href='$1' class='extLink'>$1</a>");
   var exp = /[\@]+([A-Za-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF0-9-_]+)/ig;
   uri = encodeURIComponent(texto.match(exp));
   uri = uri.substring(3);
-  texto = texto.replace(exp,"<a href='http://twitter.com/"+uri+"' class='profileLink'>@$1</a>"); 
+  texto = texto.replace(exp,"<a href='http://twitter.com/"+uri+"' class='profileLink'>@$1</a>");
   var exp = /[\#]+([A-Za-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF0-9-_]+)/ig;
   uri = encodeURIComponent(texto.match(exp));
   uri = uri.substring(3);
@@ -252,6 +260,19 @@ TweetCarousel.prototype.textFormat = function(texto){
   // make it bold
   return texto;
 };
+
+TweetCarousel.prototype.paintTweet = function(tweet,e){
+  $(e).html(tweet);
+}
+
+TweetCarousel.prototype.paintNewTweets = function(){
+  if(this.addTweets.length > 0){
+    this.container.children('li').each(function(i,e){
+      tweet = this.tweetFormat(this.addTweets[i]);
+      this.paintTweet(tweet,e);
+    }.bind(this));
+  }
+}
 
 TweetCarousel.prototype.carouselUpdate = function(carousel, li_object, index, state){
   window.console.log(this.addTweets.length + "new tweets remain");
