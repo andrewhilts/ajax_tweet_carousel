@@ -4,18 +4,34 @@ function TweetCarousel(params){
   this.oldTweets = [];
   this.addTweets = [];
   this.newTweetIDs = [];
-  this.tempo = params.tempo*1000;
-  this.timeLeft = params.tempo;
-  this.quantity = params.tweets;
-  this.queryString = params.queryString;
+
+  this.defaults = {
+    tempo                 : 60000,
+    quantity              : 8,
+    queryType             : "search",
+    queryString           : "%23twitter",
+    controlRetweet        : true,
+    controlReply          : true,
+    controlFavorite       : true,
+    profileImgSize        : 'normal',
+    autoStart             : true,
+    displayRequestStatus  : false
+  };
+  for(i in this.defaults){
+    if(typeof params[i] !== "undefined"){
+      this[i] = params[i];
+    }
+    else{
+      this[i] = this.defaults[i];
+    }
+  }
+  this.timeLeft = this.tempo;
+  this.tempo = this.tempo*1000;
+
   this.container = $("#"+params.container);
   this.skin = this.container[0].className;
-  this.controlRetweet = params.controlRetweet;
-  this.controlReply = params.controlReply;
-  this.controlFavorite = params.controlFavorite;
-  this.queryType = params.queryType;
-  this.profileImgSize = params.profileImgSize;
-  if(params.queryType == "search"){
+
+  if(this.queryType == "search"){
     this.url = "http://search.twitter.com/search.json?q="+this.queryString+"&rpp="+this.quantity;
   }
   else{
@@ -25,7 +41,7 @@ function TweetCarousel(params){
   this.addListener("update",function(){
     this.paintNewTweets();
   })
-  if(params.autoStart){
+  if(this.autoStart){
     this.query();
   }
 }
