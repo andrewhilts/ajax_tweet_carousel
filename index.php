@@ -26,58 +26,41 @@ function carouselAfter(carousel, li_object, index, state){
 $(document).ready(function(){
   myTweets = new TweetCarousel({
     queryString: "%23twitter",
-    //If you want to display a single user's tweets, change queryType to "user". "search" is possible for some users; not all.
-    queryType: "search",
-    tempo: 200,
-    tweets: 6,
-    controlReply: true,
-    controlRetweet: true,
-    controlFavorite: true,
-    displayRequestStatus: true,
+    tempo: 20,
     container: "tweets",
-    autoStart: true,
     profileImgSize: "bigger",
-    }
-  );
+    displayRequestStatus: true
+  });
 
   myTweets2 = new TweetCarousel({
-    queryType: "search",
     queryString: "%23drupal",
     tempo: 100,
-    tweets: 16,
-    profileImgSize: "normal",
-    autoStart: true,
-    container: "tweets2",
-    displayRequestStatus: false,
-    controlReply: true,
-    controlRetweet: true,
-    controlFavorite: true
-    }
-  );
+    container: "tweets2"
+  });
 
   myTweets2.addListener("displayInit",function(){
-      //remove standard listener
-      this.removeDefaultUpdateMethod();
-      //set animation time (used in carousel functions)
-      this.animationTime = 1000;
+    //remove standard update listener
+    this.removeDefaultUpdateMethod();
+    //set animation time (used in carousel functions)
+    this.animationTime = 1000;
 
-      params = {
-        auto: 1,
-        animation:this.animationTime,
-        scroll: 1,
-        wrap: 'circular',
-        vertical:true,
-        itemFirstOutCallback : {
-          onBeforeAnimation: carouselBefore.bind(this),
-        },
-        itemLastInCallback : {
-          onBeforeAnimation: carouselAfter.bind(this),
-          onAfterAnimation: this.carouselUpdate.bind(this)
-        }
-      };
-      //Add jcarousel
-      this.container.jcarousel(params);
-    });
+    params = {
+      auto: 1,
+      animation:this.animationTime,
+      scroll: 1,
+      wrap: 'circular',
+      vertical:true,
+      itemFirstOutCallback : {
+        onBeforeAnimation: carouselBefore.bind(this),
+      },
+      itemLastInCallback : {
+        onBeforeAnimation: carouselAfter.bind(this),
+        onAfterAnimation: this.carouselUpdate.bind(this)
+      }
+    };
+    //Add jcarousel
+    this.container.jcarousel(params);
+  });
 
 });
 </script>
