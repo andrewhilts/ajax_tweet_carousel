@@ -23,10 +23,24 @@ function carouselAfter(carousel, li_object, index, state){
     $(li_object).fadeTo(1,0.01).delay(this.animationTime/2).fadeTo(this.animationTime,1);
   }
 }
+
+function carouselInit(carousel)
+{
+    // Pause autoscrolling if the user moves with the cursor over the clip.
+    carousel.clip.hover(function() {
+        carousel.stopAuto();
+    }, function() {
+        carousel.startAuto();
+    });
+    function tweetnext() {carousel.next()};
+};
+
 $(document).ready(function(){
   myTweets = new TweetCarousel({
-    queryString: "%23twitter",
-    tempo: 20,
+    queryType: "user",
+    queryString: "kevinsmith",
+    tempo: 120,
+    quantity: 5,
     container: "tweets",
     profileImgSize: "bigger",
     displayRequestStatus: true
@@ -50,6 +64,7 @@ $(document).ready(function(){
       scroll: 1,
       wrap: 'circular',
       vertical:true,
+      initCallback : carouselInit,
       itemFirstOutCallback : {
         onBeforeAnimation: carouselBefore.bind(this),
       },

@@ -143,30 +143,48 @@ background-color:#ffffff;
 .pic-orient img{
   padding:6px;
   outline:1px solid #ccc;
-  margin:0 6px;
-  float:left;
+  margin:0 auto;
+  float:none;
+  display:block;
+  width:73px;
+  height:73px;
 }
 
 .pic-orient span.date {
   float:none;
+  text-align:center;
   display:block;
+  width:100%;
+}
+
+.pic-orient span.name {
+  text-align:center;
+  display:block;
+  width:100%;
 }
 
 .pic-orient {
   width:440px;
+  font-size:12px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size:16px;
+display:table;
 }
 
 .pic-orient li {
-  height:100px;
-  width:220px;
+  width:130px;
+height:auto;
   list-style:none;
-  float:left;
+  float:none;
+display:inline-block;
+vertical-align:top;
 position:relative;
+margin:10px 5px;
 }
 
 .pic-orient li p {
   word-wrap:break-word;
 }
 
-.pic-orient .tweetControls {visibility:hidden; top:63px; width:73px; border-right:none; border-top:1px solid orange; margin:0;left:12px;}
+.pic-orient .tweetControls {visibility:hidden; top:63px; width:73px; border-right:none; border-top:1px solid orange; margin:0 0 0 -37px;left:50%}
 .tweetControls a {float:left; margin:0 3px}
