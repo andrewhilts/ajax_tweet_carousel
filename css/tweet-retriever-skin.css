@@ -1,5 +1,46 @@
 body {font-family:Arial; font-size:13px}
 
+.tweet-retriever li, .jcarousel-item {
+    width: 290px;
+    height: 60px;
+}
+
+.tweet-retriever {
+  width:290px;
+  float:left;
+}
+
+.tweet-retriever img {
+  float:left;
+  margin:3px 5px 0 0;
+  border:0;
+}
+.tweet-retriever img a {
+  text-decoration:none;
+  border:0;
+}
+.tweet-retriever span.name {
+  font-weight:bold;
+  font-size:0.8em;
+}
+.tweet-retriever span.name a {
+  color:#000;
+  text-decoration:none;
+}
+
+.tweet-retriever span.date {
+  color:grey;
+  font-size:0.75em;
+  float:right;
+  margin:0 2px 0 0;
+}
+.tweet-retriever p {
+  margin:0.4em 0 0 0;
+  padding:0;
+  font-size:0.75em;
+}
+.tweet-retriever span.real_time {display:none}
+
 .jcarousel-container {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -10,7 +51,7 @@ body {font-family:Arial; font-size:13px}
 }
 
 .jcarousel-direction-rtl {
-	direction: rtl;
+  direction: rtl;
 }
 
 .jcarousel-container-horizontal {
@@ -38,14 +79,9 @@ body {font-family:Arial; font-size:13px}
     height: 340px;
 }
 
-.jcarousel-item {
-    width: 290px;
-    height: 60px;
-}
-
 .jcarousel-item:hover {
     /*background*/
- 
+
 }
 .jcarousel-next {
     /*display:block;
@@ -55,12 +91,12 @@ body {font-family:Arial; font-size:13px}
 }
 
 .jcarousel-item-horizontal {
-	margin-left: 0;
+  margin-left: 0;
     margin-right: 10px;
 }
 
 .jcarousel-direction-rtl .jcarousel-item-horizontal {
-	margin-left: 10px;
+  margin-left: 10px;
     margin-right: 0;
 }
 
@@ -73,39 +109,6 @@ body {font-family:Arial; font-size:13px}
     color: #000;
 }
 
-
-.jcarousel-item img {
-	float:left;
-	margin:3px 5px 0 0;
-	border:0;
-	width:48px;
-	height:48px;
-}
-.jcarousel-item img a {
-	text-decoration:none;
-	border:0;
-}
-.jcarousel-item span.name {
-	font-weight:bold;
-	font-size:0.8em;
-}
-.jcarousel-item span.name a {
-	color:#000;
-	text-decoration:none;
-}
-
-.jcarousel-item span.date {
-	color:grey;
-	font-size:0.75em;
-	float:right;
-	margin:0 2px 0 0;
-}
-.jcarousel-item p {
-	margin:0.4em 0 0 0;
-	padding:0;
-	font-size:0.75em;
-}
-.jcarousel-item span.real_time {display:none}
 
 .tweetControls {font-size:16px; position:absolute; visibility:hidden; margin:3px 0 0 27px; width:21px; border-right:1px solid orange}
 
@@ -136,3 +139,34 @@ background-color:#ffffff;
 .tweetControls a.favorite:hover i {background-position:-48px 0;}
 .tweetControls a.retweet i {background-position:-80px 0;}
 .tweetControls a.retweet:hover i {background-position:-96px 0;}
+
+.pic-orient img{
+  padding:6px;
+  outline:1px solid #ccc;
+  margin:0 6px;
+  float:left;
+}
+
+.pic-orient span.date {
+  float:none;
+  display:block;
+}
+
+.pic-orient {
+  width:440px;
+}
+
+.pic-orient li {
+  height:100px;
+  width:220px;
+  list-style:none;
+  float:left;
+position:relative;
+}
+
+.pic-orient li p {
+  word-wrap:break-word;
+}
+
+.pic-orient .tweetControls {visibility:hidden; top:63px; width:73px; border-right:none; border-top:1px solid orange; margin:0;left:12px;}
+.tweetControls a {float:left; margin:0 3px}
