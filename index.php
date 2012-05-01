@@ -28,105 +28,75 @@ $(document).ready(function(){
     queryString: "%23twitter",
     //If you want to display a single user's tweets, change queryType to "user". "search" is possible for some users; not all.
     queryType: "search",
-    tempo: 10,
-    tweets: 8,
+    tempo: 200,
+    tweets: 6,
     controlReply: true,
     controlRetweet: true,
     controlFavorite: true,
-    displayRequestStatus: false,
-    container: "tweets"
-  }
+    displayRequestStatus: true,
+    container: "tweets",
+    autoStart: true,
+    profileImgSize: "bigger",
+    }
   );
 
   myTweets2 = new TweetCarousel({
+    queryType: "search",
     queryString: "%23drupal",
-    //If you want to display a single user's tweets, change queryType to "user". "search" is possible for some users; not all.
-    queryType: "search",
-    tempo: 300,
+    tempo: 100,
     tweets: 16,
-    controlReply: true,
-    controlRetweet: true,
-    controlFavorite: true,
-    displayRequestStatus: false,
+    profileImgSize: "normal",
+    autoStart: true,
     container: "tweets2",
-  }
-  );
-
-myTweets3 = new TweetCarousel({
-    queryString: "meteor",
-    //If you want to display a single user's tweets, change queryType to "user". "search" is possible for some users; not all.
-    queryType: "search",
-    tempo: 30,
-    tweets: 16,
+    displayRequestStatus: false,
     controlReply: true,
     controlRetweet: true,
-    controlFavorite: true,
-    displayRequestStatus: false,
-    container: "tweets3"
-  }
+    controlFavorite: true
+    }
   );
 
-myTweets4 = new TweetCarousel({
-    queryString: "github",
-    //If you want to display a single user's tweets, change queryType to "user". "search" is possible for some users; not all.
-    queryType: "search",
-    tempo: 300,
-    tweets: 16,
-    controlReply: true,
-    controlRetweet: true,
-    controlFavorite: true,
-    displayRequestStatus: false,
-    container: "tweets4"
-  });
+  myTweets2.addListener("displayInit",function(){
+      //remove standard listener
+      this.removeDefaultUpdateMethod();
+      //set animation time (used in carousel functions)
+      this.animationTime = 1000;
 
-  myTweets.query();
-  // myTweets.paintTweet = function(tweet,e){
-  //        $(e).queue(function(){
-  //             $(this).fadeTo(200,0.01).html(tweet).fadeTo(200,1);
-  //         });
-  //     }
-  // myTweets2.query();
-  //myTweets3.query();
-  // myTweets4.query();
-
-  // myTweets.addListener("displayInit",function(){
-  //     this.animationTime = 500;
-  //     params = {
-  //       auto: 1,
-  //       animation:700,
-  //       scroll: 1,
-  //       wrap: 'circular',
-  //       vertical:false,
-  //       itemFirstOutCallback : {
-  //         onBeforeAnimation: carouselBefore.bind(this),
-  //       },
-  //       itemLastInCallback : {
-  //         onBeforeAnimation: carouselAfter.bind(this),
-  //         onAfterAnimation: this.carouselUpdate.bind(this)
-  //       }
-  //     };
-  //     this.container.jcarousel(params);
-  //   });
+      params = {
+        auto: 1,
+        animation:this.animationTime,
+        scroll: 1,
+        wrap: 'circular',
+        vertical:true,
+        itemFirstOutCallback : {
+          onBeforeAnimation: carouselBefore.bind(this),
+        },
+        itemLastInCallback : {
+          onBeforeAnimation: carouselAfter.bind(this),
+          onAfterAnimation: this.carouselUpdate.bind(this)
+        }
+      };
+      //Add jcarousel
+      this.container.jcarousel(params);
+    });
 
 });
 </script>
   </head>
   <body>
-  <div id="wrapper">
+  <div id="wrapper" style="height:800px">
   <h1>Ajax Tweet Carousel</h1>
 
   <!-- Begin Tweet Carousel HTML tags !-->
   <!-- the status div is automatically hidden if you set displayRequestStatus to false !-->
   <!-- Ensure your skin's classname begins with jcarousel-skin- !-->
-  <ul id="tweets" class="jcarousel-skin-tweet-retriever"></ul>
-<hr>
-<div class="grey" style="float:left">
+  <ul id="tweets" class="tweet-retriever pic-orient"></ul>
+
+<div class="grey tweet-retriever" style="float:left">
   <ul id="tweets2" class="jcarousel-skin-tweet-retriever"></ul>
 </div>
   <ul id="tweets3" class="jcarousel-skin-tweet-retriever"></ul>
   <ul id="tweets4" class="jcarousel-skin-tweet-retriever"></ul>
   <!-- End Tweet Carousel HTML tags !-->
-
 
   </body>
 </html>
