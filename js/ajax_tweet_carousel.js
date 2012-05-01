@@ -14,16 +14,20 @@ function TweetCarousel(params){
   this.controlReply = params.controlReply;
   this.controlFavorite = params.controlFavorite;
   this.queryType = params.queryType;
+  this.profileImgSize = params.profileImgSize;
   if(params.queryType == "search"){
     this.url = "http://search.twitter.com/search.json?q="+this.queryString+"&rpp="+this.quantity;
   }
   else{
     this.url = "http://twitter.com/status/user_timeline/"+this.queryString+".json?count="+this.quantity;
   }
-  this.stylize(params);
+  this.addStatusElem(params);
   this.addListener("update",function(){
     this.paintNewTweets();
   })
+  if(params.autoStart){
+    this.query();
+  }
 }
 
 //Inherit event model from eventtarget.js
@@ -105,7 +109,14 @@ TweetCarousel.prototype.saveTweets = function(json, queryType){
         };
         break;
     }
-
+    switch(this.profileImgSize){
+      case "mini":
+        user.profile_image_url = user.profile_image_url.replace("_normal","_mini");
+        break;
+      case "bigger":
+        user.profile_image_url = user.profile_image_url.replace("_normal","_bigger");
+        break;
+    }
     tweetData = {
       id: item.id,
       id_str: item.id_str,
@@ -148,7 +159,7 @@ TweetCarousel.prototype.updateTweetTimes = function(){
   }
 }
 
-TweetCarousel.prototype.stylize = function(params){
+TweetCarousel.prototype.addStatusElem = function(params){
   this.displayRequestStatus = params.displayRequestStatus;
   if(this.displayRequestStatus){
     this.statusElementId = params.container+"_status";
@@ -272,6 +283,10 @@ TweetCarousel.prototype.paintNewTweets = function(){
       this.paintTweet(tweet,e);
     }.bind(this));
   }
+}
+
+TweetCarousel.prototype.removeDefaultUpdateMethod = function(){
+  this.removeListener("update",this.paintNewTweets);
 }
 
 TweetCarousel.prototype.carouselUpdate = function(carousel, li_object, index, state){
