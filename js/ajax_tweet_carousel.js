@@ -261,7 +261,7 @@ TweetCarousel.prototype.tweetFormat = function(item){
       tweet += '</div>';
   }
   tweet += '<span class="name"><a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page">'+item.user.name+'</a></span>';
-  tweet += '<span class="date">'+this.timeAgo(item.created_a)+'</span>';
+  tweet += '<span class="date">'+this.timeAgo(item.created_at)+'</span>';
   tweet += '<p>'+this.textFormat(item.text)+'</p>';
   tweet += '<span class="real_time">'+item.created_at+'</span>';
   return tweet;
