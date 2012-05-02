@@ -39,7 +39,7 @@ function TweetCarousel(params){
   }
   this.addStatusElem(params);
   this.addListener("update",function(){
-    this.paintNewTweets();
+    this.paintNewTweets(0);
   })
   if(this.autoStart){
     this.query();
@@ -186,14 +186,10 @@ TweetCarousel.prototype.addStatusElem = function(params){
 }
 
 TweetCarousel.prototype.displayInit = function(){
-  $.each(this.addTweets,function(i,item){
-    tweet_time = this.timeAgo(item.created_at);
-    tweet = this.tweetFormat(item);
+  for(i in this.addTweets){
     this.container.prepend("<li></li>");
-    e = this.container.children()[0];
-    this.paintTweet(tweet,e);
-  }.bind(this));
-  this.addTweets = [];
+  }
+  this.paintNewTweets(0);
   this.initialized = true;
   this.fire("displayInit");
 }
@@ -265,7 +261,7 @@ TweetCarousel.prototype.tweetFormat = function(item){
       tweet += '</div>';
   }
   tweet += '<span class="name"><a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page">'+item.user.name+'</a></span>';
-  tweet += '<span class="date">'+tweet_time+'</span>';
+  tweet += '<span class="date">'+this.timeAgo(item.created_a)+'</span>';
   tweet += '<p>'+this.textFormat(item.text)+'</p>';
   tweet += '<span class="real_time">'+item.created_at+'</span>';
   return tweet;
@@ -288,16 +284,17 @@ TweetCarousel.prototype.textFormat = function(texto){
   return texto;
 };
 
-TweetCarousel.prototype.paintTweet = function(tweet,e){
+TweetCarousel.prototype.paintTweet = function(tweet,e,i){
   $(e).html(tweet);
+  i++;
+  this.paintNewTweets(i);
 }
 
-TweetCarousel.prototype.paintNewTweets = function(){
-  if(this.addTweets.length > 0){
-    this.container.children('li').each(function(i,e){
-      tweet = this.tweetFormat(this.addTweets[i]);
-      this.paintTweet(tweet,e);
-    }.bind(this));
+TweetCarousel.prototype.paintNewTweets = function(i){
+  if (this.addTweets.length > 0){
+    tweet = this.tweetFormat(this.addTweets.shift());
+    e = this.container.children('li')[i];
+    this.paintTweet(tweet,e,i);
   }
 }
 
