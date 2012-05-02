@@ -148,6 +148,12 @@ background-color:#ffffff;
   display:block;
   width:73px;
   height:73px;
+  opacity:0;
+-webkit-transition: opacity 0.3s ease-in-out;
+  -moz-transition: opacity 0.3s ease-in-out;
+  -o-transition: opacity 0.3s ease-in-out;
+  -ms-transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .pic-orient span.date {
@@ -188,3 +194,7 @@ margin:10px 5px;
 
 .pic-orient .tweetControls {visibility:hidden; top:63px; width:73px; border-right:none; border-top:1px solid orange; margin:0 0 0 -37px;left:50%}
 .tweetControls a {float:left; margin:0 3px}
+
+.pic-orient img.fadeIn {
+  opacity:1 !important;
+}
