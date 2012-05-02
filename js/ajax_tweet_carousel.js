@@ -1,4 +1,4 @@
-function TweetCarousel(params){
+function TweetRetriever(params){
   EventTarget.call(this);
   this.newTweets = [];
   this.oldTweets = [];
@@ -47,9 +47,9 @@ function TweetCarousel(params){
 }
 
 //Inherit event model from eventtarget.js
-TweetCarousel.prototype = new EventTarget();
+TweetRetriever.prototype = new EventTarget();
 
-TweetCarousel.prototype.update = function (){
+TweetRetriever.prototype.update = function (){
   this.timeLeft--;
   if(this.timeLeft==0){
     this.timeLeft = this.tempo/1000;
@@ -60,7 +60,7 @@ TweetCarousel.prototype.update = function (){
   }
 }
 
-TweetCarousel.prototype.query = function() {
+TweetRetriever.prototype.query = function() {
   $.ajax({
     crossDomain:true,
     url: this.url,
@@ -101,7 +101,7 @@ TweetCarousel.prototype.query = function() {
   this.update();
 }
 
-TweetCarousel.prototype.saveTweets = function(json, queryType){
+TweetRetriever.prototype.saveTweets = function(json, queryType){
   switch(queryType){
     case "search":
       json_results = json.results;
@@ -145,7 +145,7 @@ TweetCarousel.prototype.saveTweets = function(json, queryType){
   }.bind(this));
 }
 
-TweetCarousel.prototype.compareTweetQueries = function() {
+TweetRetriever.prototype.compareTweetQueries = function() {
   seen = [], diff = [], newTweets = [], oldTweets = [];
   $.each(this.newTweets,function(i,item){
     newTweets.push(item[0]);
@@ -164,7 +164,7 @@ TweetCarousel.prototype.compareTweetQueries = function() {
   //this.addTweets = diff;
 };
 
-TweetCarousel.prototype.updateTweetTimes = function(){
+TweetRetriever.prototype.updateTweetTimes = function(){
   real_times = this.container.find('span.real_time');
   for(i in real_times){
     if(!isNaN(i)){
@@ -175,7 +175,7 @@ TweetCarousel.prototype.updateTweetTimes = function(){
   }
 }
 
-TweetCarousel.prototype.addStatusElem = function(params){
+TweetRetriever.prototype.addStatusElem = function(params){
   this.displayRequestStatus = params.displayRequestStatus;
   if(this.displayRequestStatus){
     this.statusElementId = params.container+"_status";
@@ -185,7 +185,7 @@ TweetCarousel.prototype.addStatusElem = function(params){
   }
 }
 
-TweetCarousel.prototype.displayInit = function(){
+TweetRetriever.prototype.displayInit = function(){
   for(i in this.addTweets){
     this.container.prepend("<li></li>");
   }
@@ -194,7 +194,7 @@ TweetCarousel.prototype.displayInit = function(){
   this.fire("displayInit");
 }
 
-TweetCarousel.prototype.timeAgo = function(dateString) {
+TweetRetriever.prototype.timeAgo = function(dateString) {
   var browser = function() {
         var ua = navigator.userAgent;
         return {
@@ -248,7 +248,7 @@ TweetCarousel.prototype.timeAgo = function(dateString) {
   }
 };
 
-TweetCarousel.prototype.tweetFormat = function(item){
+TweetRetriever.prototype.tweetFormat = function(item){
   tweet = '<a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page">';
   tweet += '<img src="'+item.user.profile_image_url+'" alt="'+item.user.name+'&rsquo;s profile picture"/></a>'
   if(this.controlRetweet === true || this.controlReply === true || this.controlFavorite === true){
@@ -267,7 +267,7 @@ TweetCarousel.prototype.tweetFormat = function(item){
   return tweet;
 };
 
-TweetCarousel.prototype.textFormat = function(texto){
+TweetRetriever.prototype.textFormat = function(texto){
   //This from Juitter
   //make links
   var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
@@ -284,13 +284,13 @@ TweetCarousel.prototype.textFormat = function(texto){
   return texto;
 };
 
-TweetCarousel.prototype.paintTweet = function(tweet,e,i){
+TweetRetriever.prototype.paintTweet = function(tweet,e,i){
   $(e).html(tweet);
   i++;
   this.paintNewTweets(i);
 }
 
-TweetCarousel.prototype.paintNewTweets = function(i){
+TweetRetriever.prototype.paintNewTweets = function(i){
   if (this.addTweets.length > 0){
     tweet = this.tweetFormat(this.addTweets.shift());
     e = this.container.children('li')[i];
@@ -298,11 +298,11 @@ TweetCarousel.prototype.paintNewTweets = function(i){
   }
 }
 
-TweetCarousel.prototype.removeDefaultUpdateMethod = function(){
+TweetRetriever.prototype.removeDefaultUpdateMethod = function(){
   this.removeListener("update",this.paintNewTweets);
 }
 
-TweetCarousel.prototype.carouselUpdate = function(carousel, li_object, index, state){
+TweetRetriever.prototype.carouselUpdate = function(carousel, li_object, index, state){
   window.console.log(this.addTweets.length + "new tweets remain");
   if(this.addTweets.length > 0){
       properIndex = carousel.index(index);
