@@ -8,7 +8,7 @@
 <script type="text/javascript" src="js/jquery.jcarousel.js"></script>
 <script type="text/javascript" src="js/jquery.timers.js"></script>
 <script type="text/javascript" src="js/eventtarget.js"></script>
-<script type="text/javascript" src="js/ajax_tweet_carousel.js"></script>
+<script type="text/javascript" src="js/ajax_tweet_retriever.js"></script>
 <!--
   jCarousel skin stylesheet
 -->
@@ -36,7 +36,7 @@ function carouselInit(carousel)
 };
 
 $(document).ready(function(){
-  myTweets = new TweetCarousel({
+  myTweets = new TweetRetriever({
     queryType: "search",
     queryString: "%23twitter",
     tempo: 120,
@@ -61,7 +61,7 @@ $(document).ready(function(){
       }.bind(this));
   }
 
-  myTweets2 = new TweetCarousel({
+  myTweets2 = new TweetRetriever({
         queryString: "%23drupal",
         tempo: 100,
         container: "tweets2"
@@ -85,6 +85,7 @@ $(document).ready(function(){
           },
           itemLastInCallback : {
             onBeforeAnimation: carouselAfter.bind(this),
+            //the below replaces the default update method
             onAfterAnimation: this.carouselUpdate.bind(this)
           }
         };
