@@ -1,3 +1,13 @@
+/*
+Copyright 2012 Andrew Hilts et al
+
+Ajax TweetRetriever is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Ajax TweetRetriever is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+To review a copy of the GNU General Public License, see http://www.gnu.org/licenses/.
+*/
+
 function TweetRetriever(params){
   EventTarget.call(this);
   this.newTweets = [];
@@ -268,7 +278,13 @@ TweetRetriever.prototype.tweetFormat = function(item){
 };
 
 TweetRetriever.prototype.textFormat = function(texto){
-  //This from Juitter
+  /*
+  This function copied from Juitter.
+  BY RODRIGO FANTE - http://rodrigofante.com
+  Juitter is distributed under the MIT License
+  Read more about the MIT License --> http://www.opensource.org/licenses/mit-license.php
+  */
+
   //make links
   var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
   texto = texto.replace(exp,"<a href='$1' class='extLink'>$1</a>");
