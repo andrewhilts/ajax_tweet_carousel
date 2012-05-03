@@ -4,17 +4,28 @@ body {
 }
 
 #wrapper {
-    width:1000px;
+    width:960px;
     padding:20px;
     margin:0px auto;
     background-color:#FFFFFF;
 }
-.params-explain li em {
+
+.container {
+    display:inline-block;
+    vertical-align:top;
+    margin:20px;
+    padding:20px;
+}
+
+.container h2 {
+    text-align:center;
+}
+
+.params-explain li em, pre {
     font-family:monospace;
     font-style:normal;
     color:#143647;
-    width:170px;
-    display:inline-block;
+    font-size:10px;
 }
 .params-explain li {
     margin-bottom:1em;
@@ -62,8 +73,9 @@ aside a:hover {background:#EF9A52}
 }
 
 .grey .jcarousel-clip-vertical {
-    width:290px;
     height:320px;
+    margin:0;
+    padding:0;
 }
 .grey .jcarousel-item {
     border:1px solid #ccc;
@@ -71,3 +83,14 @@ aside a:hover {background:#EF9A52}
     padding:5px 6px;
     width:270px;
 }
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+    }
+* html .clearfix             { zoom: 1; } /* IE6 */
+*:first-child+html .clearfix { zoom: 1; } /* IE7 */

@@ -7,7 +7,8 @@ body {font-family:Arial; font-size:13px}
 
 .tweet-retriever {
   width:290px;
-  float:left;
+  margin:0;
+  padding:0;
 }
 
 .tweet-retriever img {
@@ -56,13 +57,10 @@ body {font-family:Arial; font-size:13px}
 
 .jcarousel-container-horizontal {
     width: 900px;
-    padding: 20px 40px;
 }
 
 .jcarousel-container-vertical {
-    width: 290px;
     height: 340px;
-    padding: 40px 20px;
 }
 
 .jcarousel-clip {
@@ -75,7 +73,6 @@ body {font-family:Arial; font-size:13px}
 }
 
 .jcarousel-clip-vertical {
-    width:  290px;
     height: 340px;
 }
 
