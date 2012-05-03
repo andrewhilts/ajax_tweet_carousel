@@ -249,7 +249,7 @@ TweetRetriever.prototype.timeAgo = function(dateString) {
 };
 
 TweetRetriever.prototype.tweetFormat = function(item){
-  tweet = '<a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page">';
+  tweet = '<a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page" class="profileLink">';
   tweet += '<img src="'+item.user.profile_image_url+'" alt="'+item.user.name+'&rsquo;s profile picture"/></a>'
   if(this.controlRetweet === true || this.controlReply === true || this.controlFavorite === true){
       tweet += '<div class="tweetControls">';
@@ -285,7 +285,7 @@ TweetRetriever.prototype.textFormat = function(texto){
 };
 
 TweetRetriever.prototype.paintTweet = function(tweet,e,i){
-  $(e).html(tweet);
+  e.html(tweet);
   i++;
   this.paintNewTweets(i);
 }
@@ -294,7 +294,7 @@ TweetRetriever.prototype.paintNewTweets = function(i){
   if (this.addTweets.length > 0){
     tweet = this.tweetFormat(this.addTweets.shift());
     e = this.container.children('li')[i];
-    this.paintTweet(tweet,e,i);
+    this.paintTweet(tweet,$(e),i);
   }
 }
 
