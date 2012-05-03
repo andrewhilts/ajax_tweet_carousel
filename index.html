@@ -49,7 +49,7 @@ $(document).ready(function(){
     queryType: "search",
     queryString: "%23twitter",
     tempo: 120,
-    quantity: 9,
+    quantity: 6,
     container: "tweets",
     profileImgSize: "bigger",
     displayRequestStatus: true
@@ -105,16 +105,83 @@ $(document).ready(function(){
 </script>
   </head>
   <body>
-  <div id="wrapper" style="height:800px">
-  <h1>Ajax Tweet Carousel</h1>
+  <div id="wrapper" class="clearfix">
+  <h1>Ajax TweetRetriever</h1>
 
   <!-- Begin Tweet Carousel HTML tags !-->
   <!-- the status div is automatically hidden if you set displayRequestStatus to false !-->
   <!-- Ensure your skin's classname begins with jcarousel-skin- !-->
-  <ul id="tweets" class="tweet-retriever pic-orient"></ul>
-
-<div class="grey tweet-retriever" style="float:left">
+  <div class="container">
+    <h2>Custom TweetPaint method</h2>
+    <ul id="tweets" class="tweet-retriever pic-orient"></ul>
+    <h3>Instantiation</h2>
+<pre>
+myTweets = new TweetRetriever({
+  queryString: "%23twitter",
+  tempo: 120,
+  quantity: 6,
+  container: "tweets",
+  profileImgSize: "bigger",
+  displayRequestStatus: true
+});
+</pre>
+  <h3>TweetPaint Method Override</h3>
+  <pre>
+myTweets.paintTweet = function(tweet,e,i){
+  e.fadeOut(300, function(){
+    e.html(tweet);
+    profile_pic = e.children('a.profileLink').children('img');
+    i++;
+    this.paintNewTweets(i);
+    e.fadeIn(300);
+    profile_pic.load(function(){
+      $(this).addClass("fadeIn");
+    });
+  }.bind(this));
+}
+  </pre>
+  </div>
+<div class="container">
+<div class="grey tweet-retriever clearfix">
+  <h2>Inside a carousel, with custom update method</h2>
   <ul id="tweets2" class="jcarousel-skin-tweet-retriever"></ul>
+</div>
+  <h3>Instantiation</h2>
+  <pre>
+myTweets2 = new TweetRetriever({
+  queryString: "%23drupal",
+  tempo: 100,
+  container: "tweets2"
+});
+  </pre>
+  <h3>Carousel applied on "displayInit" event</h3>
+  <pre>
+myTweets2.addListener("displayInit",function(){
+  //remove standard update listener
+  this.removeDefaultUpdateMethod();
+  //set animation time (used in carousel functions)
+  this.animationTime = 1000;
+
+  params = {
+    auto: 1,
+    animation:this.animationTime,
+    scroll: 1,
+    wrap: 'circular',
+    vertical:true,
+    initCallback : carouselInit,
+    itemFirstOutCallback : {
+      onBeforeAnimation: carouselBefore.bind(this),
+    },
+    itemLastInCallback : {
+      onBeforeAnimation: carouselAfter.bind(this),
+      //the below replaces the default update method
+      onAfterAnimation: this.carouselUpdate.bind(this)
+    }
+  };
+  //Add jcarousel
+  this.container.jcarousel(params);
+});
+  </pre>
 </div>
   <ul id="tweets3" class="jcarousel-skin-tweet-retriever"></ul>
   <ul id="tweets4" class="jcarousel-skin-tweet-retriever"></ul>
