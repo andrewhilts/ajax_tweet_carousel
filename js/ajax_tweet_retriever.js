@@ -259,7 +259,7 @@ TweetRetriever.prototype.timeAgo = function(dateString) {
 };
 
 TweetRetriever.prototype.tweetFormat = function(item){
-  tweet = '<a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page" class="profileLink">';
+  tweet = '<a href="http://www.twitter.com/'+item.user.name+'" title="'+item.user.name+'&rsquo;s Twitter page" class="profilePicLink">';
   tweet += '<img src="'+item.user.profile_image_url+'" alt="'+item.user.name+'&rsquo;s profile picture"/></a>'
   if(this.controlRetweet === true || this.controlReply === true || this.controlFavorite === true){
       tweet += '<div class="tweetControls">';

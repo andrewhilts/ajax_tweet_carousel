@@ -47,7 +47,7 @@ function carouselInit(carousel)
 $(document).ready(function(){
   myTweets = new TweetRetriever({
     queryType: "search",
-    queryString: "%23twitter",
+    queryString: "%23facebook",
     tempo: 120,
     quantity: 6,
     container: "tweets",
@@ -59,7 +59,7 @@ $(document).ready(function(){
   myTweets.paintTweet = function(tweet,e,i){
     e.fadeOut(300, function(){
         e.html(tweet);
-        profile_pic = e.children('a.profileLink').children('img');
+        profile_pic = e.children('a.profilePicLink').children('img');
         i++;
         this.paintNewTweets(i);
         e.fadeIn(300);
@@ -70,9 +70,10 @@ $(document).ready(function(){
   }
 
   myTweets2 = new TweetRetriever({
-    queryString: "%23drupal",
+    queryString: "%23twitter",
     tempo: 100,
-    container: "tweets2"
+    container: "tweets2",
+    displayRequestStatus: true
   });
 
   myTweets2.addListener("displayInit",function(){
