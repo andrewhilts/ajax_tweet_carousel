@@ -44,6 +44,19 @@ function carouselInit(carousel)
     function tweetnext() {carousel.next()};
 };
 
+function carouselDisplay(carousel){
+          if (carousel.state !== 'init') { 
+      real_times = $(this.container).find('span.real_time');
+       for(i in real_times){
+         if(!isNaN(i)){
+           new_time = real_times[i].innerHTML;
+           old_time = $(real_times[i]).parent().children('span.date');
+           $(old_time[0]).html(this.timeAgo(new_time));
+         }
+       }
+    }
+}
+
 $(document).ready(function(){
   myTweets = new TweetRetriever({
     queryType: "search",
@@ -89,6 +102,7 @@ $(document).ready(function(){
       wrap: 'circular',
       vertical:true,
       initCallback : carouselInit,
+      itemLoadCallback : carouselDisplay.bind(this),
       itemFirstOutCallback : {
         onBeforeAnimation: carouselBefore.bind(this),
       },
