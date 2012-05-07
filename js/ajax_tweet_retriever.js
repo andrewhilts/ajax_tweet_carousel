@@ -8,6 +8,16 @@ Ajax TweetRetriever is distributed in the hope that it will be useful, but WITHO
 To review a copy of the GNU General Public License, see http://www.gnu.org/licenses/.
 */
 
+function socialMediaAPIModel(params){
+  this.requestURL
+  this.responseFields
+}
+
+TwitterAPIModel = new socialMediaAPIModel({
+  baseURL: 
+
+});
+
 function TweetRetriever(params){
   EventTarget.call(this);
   this.newTweets = [];
