@@ -9,13 +9,30 @@ To review a copy of the GNU General Public License, see http://www.gnu.org/licen
 */
 
 function socialMediaAPIModel(params){
-  this.requestURL
-  this.responseFields
+  this.baseURL
+  this.URLParms
+  this.responseObjectModel
+  this.RequestURL = this.buildURL(this.baseURL,this.URLParams);
+}
+
+socialMediaAPIModel.prototype.buildURL = function(baseURL,URLParams){
+  url = baseURL;
+  count = 0;
+  for(i in URLParams){
+    count++;
+    if(count === 1){
+      delim = "?";
+    }
+    else{
+      delim = "&";
+    }
+    url += delim+i+"="+URLParams[i];
+  }
+  return url;
 }
 
 TwitterAPIModel = new socialMediaAPIModel({
   baseURL: 
-
 });
 
 function TweetRetriever(params){
