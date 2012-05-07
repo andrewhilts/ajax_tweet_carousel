@@ -9,10 +9,11 @@ To review a copy of the GNU General Public License, see http://www.gnu.org/licen
 */
 
 function socialMediaAPIModel(params){
-  this.baseURL
-  this.URLParms
-  this.responseObjectModel
-  this.RequestURL = this.buildURL(this.baseURL,this.URLParams);
+  this.baseURL = params.baseURL
+  this.URLParams = params.URLParams;
+  this.responseObjectModel = params.responseObjectModel;
+  //provide set of accepted params (but actual param values build in retriever)
+  this.requestURL = this.buildURL(this.baseURL,this.URLParams);
 }
 
 socialMediaAPIModel.prototype.buildURL = function(baseURL,URLParams){
@@ -32,8 +33,86 @@ socialMediaAPIModel.prototype.buildURL = function(baseURL,URLParams){
 }
 
 TwitterAPIModel = new socialMediaAPIModel({
-  baseURL: 
+  baseURL: "http://search.twitter.com/search.json",
+  URLParams: [
+    {
+      key : "q",
+      desc : "Search query. Should be URL encoded. Queries will be limited by complexity.",
+      type : "string",
+      required : true
+    },
+    {
+      key : "geocode",
+      desc : "Returns tweets by users located within a given radius of the given latitude/longitude"
+      type : "array",
+      required : false
+    },
+    {
+      key : "lang",
+      desc : "Restricts tweets to the given language, given by an ISO 639-1 code.",
+      type : "string".
+      required : false
+    },
+    {
+      key : "locale",
+      desc : "Specify the language of the query you are sending (only ja is currently effective).",
+      type : "string",
+      required : false
+    },
+    {
+      key : "page",
+      desc : "The page number (starting at 1) to return, up to a max of roughly 1500 results (based on rpp * page).",
+      type : "int",
+      required : false
+    },
+    {
+      key : "result_type",
+      desc : "Optional. Specifies what type of search results you would prefer to receive. The current default is 'mixed.' Valid values include: mixed: Include both popular and real time results in the response;  recent: return only the most recent results in the response; popular: return only the most popular results in the response",
+      type : "string",
+      options: ['mixed','recent','popular'],
+      required : false
+    },
+    {
+      key : "rpp",
+      desc : "The number of tweets to return per page, up to a max of 100.",
+      type : "int",
+      required : false
+    },
+    {
+      key : "show_user",
+      desc : "When true, prepends ":" to the beginning of the tweet. This is useful for readers that do not display Atom's author field. The default is false.",
+      type : "bool",
+      required : false
+    },
+    {
+      key : "until",
+      desc : "The page number (starting at 1) to return, up to a max of roughly 1500 results (based on rpp * page).",
+      type : "int",
+      required : false
+    },
+    {
+      key : "since_id",
+      desc : "Returns results with an ID greater than (that is, more recent than) the specified ID. There are limits to the number of Tweets which can be accessed through the API. If the limit of Tweets has occured since the since_id, the since_id will be forced to the oldest ID available.",
+      type : "int",
+      required : false
+    },
+    {
+      key : "max_id",
+      desc : "Returns results with an ID less than (that is, older than) or equal to the specified ID.",
+      type : "int",
+      required : false
+    },
+    {
+      key : "include_entities",
+      desc : "When set to either true, t or 1, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discrete structure, including: urls, media and hashtags.",
+      type : "bool",
+      required : false
+    },
+  ],
+  responseObjectModel: {}
 });
+
+alert(TwitterAPIModel.requestURL);
 
 function TweetRetriever(params){
   EventTarget.call(this);
