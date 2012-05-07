@@ -13,7 +13,7 @@ if (!Function.prototype.bind) {
 	fileref=document.createElement("script");
 	fileref.setAttribute("type","text/javascript");
 	fileref.setAttribute("src",filename);
-	document.getElementsByTagName("head")[0].appendchild(fileref);
+	document.getElementsByTagName("head")[0].appendChild(fileref);
 }
 </script>
 <script type="text/javascript" src="js/eventtarget.js"></script>
@@ -60,9 +60,9 @@ function carouselDisplay(carousel){
 $(document).ready(function(){
   myTweets = new TweetRetriever({
     queryType: "search",
-    queryString: "%23facebook",
+    queryString: "mylittlepony",
     tempo: 120,
-    quantity: 6,
+    quantity: 20,
     container: "tweets",
     profileImgSize: "bigger",
     displayRequestStatus: true

@@ -319,7 +319,7 @@ TweetRetriever.prototype.removeDefaultUpdateMethod = function(){
 }
 
 TweetRetriever.prototype.carouselUpdate = function(carousel, li_object, index, state){
-  window.console.log(this.addTweets.length + "new tweets remain");
+  //window.console.log(this.addTweets.length + "new tweets remain");
   if(this.addTweets.length > 0){
       properIndex = carousel.index(index);
       if(properIndex === 1){
