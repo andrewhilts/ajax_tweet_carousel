@@ -45,6 +45,7 @@ TwitterAPIModel = new socialMediaAPIModel({
       key : "geocode",
       desc : "Returns tweets by users located within a given radius of the given latitude/longitude"
       type : "array",
+      itemKeys : ["longitude","latitude","radius"],
       required : false
     },
     {
@@ -80,7 +81,7 @@ TwitterAPIModel = new socialMediaAPIModel({
     },
     {
       key : "show_user",
-      desc : "When true, prepends ":" to the beginning of the tweet. This is useful for readers that do not display Atom's author field. The default is false.",
+      desc : "When true, prepends ':'' to the beginning of the tweet. This is useful for readers that do not display Atom's author field. The default is false.",
       type : "bool",
       required : false
     },
@@ -104,10 +105,10 @@ TwitterAPIModel = new socialMediaAPIModel({
     },
     {
       key : "include_entities",
-      desc : "When set to either true, t or 1, each tweet will include a node called "entities,". This node offers a variety of metadata about the tweet in a discrete structure, including: urls, media and hashtags.",
+      desc : "When set to either true, t or 1, each tweet will include a node called 'entities,'. This node offers a variety of metadata about the tweet in a discrete structure, including: urls, media and hashtags.",
       type : "bool",
       required : false
-    },
+    }
   ],
   responseObjectModel: {}
 });
