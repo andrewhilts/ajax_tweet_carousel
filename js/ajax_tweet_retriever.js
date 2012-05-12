@@ -10,110 +10,168 @@ To review a copy of the GNU General Public License, see http://www.gnu.org/licen
 
 function socialMediaAPIModel(params){
   this.baseURL = params.baseURL
-  this.URLParams = params.URLParams;
+  this.allowedParams = params.allowedParams;
   this.responseObjectModel = params.responseObjectModel;
   //provide set of accepted params (but actual param values build in retriever)
-  this.requestURL = this.buildURL(this.baseURL,this.URLParams);
 }
 
-socialMediaAPIModel.prototype.buildURL = function(baseURL,URLParams){
-  url = baseURL;
+socialMediaAPIModel.prototype.buildURL = function(URLParams){
+  url = this.baseURL;
   count = 0;
-  for(i in URLParams){
-    count++;
-    if(count === 1){
-      delim = "?";
+  errors = [];
+  for(i in this.allowedParams){
+    key = this.allowedParams[i].key;
+    required = this.allowedParams[i].required;
+    if(typeof URLParams[key] !== "undefined"){
+      //allowedParam assigned value in URLParams
+      if(typeof URLParams[key] == this.allowedParams[i]["type"]){
+        //URLParam is of correct type
+
+        value = escape(URLParams[key]);
+
+        if(this.allowedParams[i]["type"] === "object"){
+          values = [];
+          for(j in this.allowedParams[i].itemKeys){
+            for(k in URLParams[key]){
+              if(k == this.allowedParams[i].itemKeys[j]){
+                values.push(escape(URLParams[key][k]));
+              }
+            }
+          }
+          if(values.length >= this.allowedParams[i].itemKeys.length){
+            value = values.join();
+          }
+          else{
+            errors.push({type:"itemKeys",key:key,required:required});
+            value = false;
+          }
+        }
+        else if(typeof this.allowedParams[i].options == "object"){
+          optionFound = false
+          //check if value is one of the predefined options
+          for(j in this.allowedParams[i].options){
+            if(value === this.allowedParams[i].options[j]){
+              optionFound = true;
+            }
+          }
+          if(!optionFound){
+            errors.push({type:"options",key:key,required:required});
+            value = false;
+          }
+        }
+        //If array, check for required items
+        //If only certain values permitted, check for them
+        count++;
+        if(count === 1){
+          delim = "?";
+        }
+        else{
+          delim = "&";
+        }
+        if(value){
+          url += delim+key+"="+value;
+        }
+      }
+      else{
+        //Type error
+        errors.push({type:"type",key:key,required:required});
+      }
     }
     else{
-      delim = "&";
+      if(this.allowedParams[i].required === true){
+        //Missing a required param
+        errors.push({type:"missing",key:key,required:required});
+      }
     }
-    url += delim+i+"="+URLParams[i];
   }
-  return url;
+  if(errors.length > 0){
+    for(i in errors){
+      if(errors[i].type === "missing" || errors[i].required){
+        fatalError = true;
+        window.console.log("Fatal Error: "+errors[i].key+" is required and threw a "+errors[i].type+" error.");
+      }
+      else{
+        window.console.log("Warning: "+errors[i].key+" threw a "+errors[i].type+" error. Parameter omitted from URL");
+      }
+    }
+  }
+  if(typeof fatalError == "undefined"){
+    return url;
+  }
+  else{
+    return false;
+  }
 }
 
 TwitterAPIModel = new socialMediaAPIModel({
+  //See https://dev.twitter.com/docs/api/1/get/search for param descriptions
   baseURL: "http://search.twitter.com/search.json",
-  URLParams: [
+  allowedParams: [
     {
       key : "q",
-      desc : "Search query. Should be URL encoded. Queries will be limited by complexity.",
       type : "string",
       required : true
     },
     {
       key : "geocode",
-      desc : "Returns tweets by users located within a given radius of the given latitude/longitude"
-      type : "array",
+      type : "object",
       itemKeys : ["longitude","latitude","radius"],
       required : false
     },
     {
       key : "lang",
-      desc : "Restricts tweets to the given language, given by an ISO 639-1 code.",
-      type : "string".
+      type : "string",
       required : false
     },
     {
       key : "locale",
-      desc : "Specify the language of the query you are sending (only ja is currently effective).",
       type : "string",
       required : false
     },
     {
       key : "page",
-      desc : "The page number (starting at 1) to return, up to a max of roughly 1500 results (based on rpp * page).",
-      type : "int",
+      type : "number",
       required : false
     },
     {
       key : "result_type",
-      desc : "Optional. Specifies what type of search results you would prefer to receive. The current default is 'mixed.' Valid values include: mixed: Include both popular and real time results in the response;  recent: return only the most recent results in the response; popular: return only the most popular results in the response",
       type : "string",
       options: ['mixed','recent','popular'],
       required : false
     },
     {
       key : "rpp",
-      desc : "The number of tweets to return per page, up to a max of 100.",
-      type : "int",
+      type : "number",
       required : false
     },
     {
       key : "show_user",
-      desc : "When true, prepends ':'' to the beginning of the tweet. This is useful for readers that do not display Atom's author field. The default is false.",
-      type : "bool",
+      type : "boolean",
       required : false
     },
     {
       key : "until",
-      desc : "The page number (starting at 1) to return, up to a max of roughly 1500 results (based on rpp * page).",
-      type : "int",
+      type : "number",
       required : false
     },
     {
       key : "since_id",
-      desc : "Returns results with an ID greater than (that is, more recent than) the specified ID. There are limits to the number of Tweets which can be accessed through the API. If the limit of Tweets has occured since the since_id, the since_id will be forced to the oldest ID available.",
-      type : "int",
+      type : "number",
       required : false
     },
     {
       key : "max_id",
-      desc : "Returns results with an ID less than (that is, older than) or equal to the specified ID.",
-      type : "int",
+      type : "number",
       required : false
     },
     {
       key : "include_entities",
-      desc : "When set to either true, t or 1, each tweet will include a node called 'entities,'. This node offers a variety of metadata about the tweet in a discrete structure, including: urls, media and hashtags.",
-      type : "bool",
+      type : "boolean",
       required : false
     }
   ],
   responseObjectModel: {}
 });
-
-alert(TwitterAPIModel.requestURL);
 
 function TweetRetriever(params){
   EventTarget.call(this);
