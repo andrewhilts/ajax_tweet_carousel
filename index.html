@@ -24,6 +24,12 @@ if (!Function.prototype.bind) {
 <link rel="stylesheet" type="text/css" href="css/tweet-retriever-skin.css" />
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <script type="text/javascript">
+
+pinterest = new SocialMediaAPIRetriever({
+  model: PinterestAPIModel,
+  URLParams: "houseandhome"
+});
+
 function carouselBefore (carousel, li_object, index, state){
   $(li_object).fadeTo(this.animationTime,0.01);
 }

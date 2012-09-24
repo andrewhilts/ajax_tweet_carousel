@@ -9,9 +9,10 @@ To review a copy of the GNU General Public License, see http://www.gnu.org/licen
 */
 
 function socialMediaAPIModel(params){
-  this.baseURL = params.baseURL
+  this.baseURL = params.baseURL;
   this.allowedParams = params.allowedParams;
   this.responseObjectModel = params.responseObjectModel;
+  this.getItems = params.getItems;
   //provide set of accepted params (but actual param values build in retriever)
 }
 
@@ -19,7 +20,7 @@ socialMediaAPIModel.prototype.buildURL = function(URLParams){
   url = this.baseURL;
   count = 0;
   errors = [];
-  for(i in this.allowedParams){
+  for(var i in this.allowedParams){
     key = this.allowedParams[i].key;
     required = this.allowedParams[i].required;
     if(typeof URLParams[key] !== "undefined"){
@@ -31,8 +32,8 @@ socialMediaAPIModel.prototype.buildURL = function(URLParams){
 
         if(this.allowedParams[i]["type"] === "object"){
           values = [];
-          for(j in this.allowedParams[i].itemKeys){
-            for(k in URLParams[key]){
+          for(var j in this.allowedParams[i].itemKeys){
+            for(var k in URLParams[key]){
               if(k == this.allowedParams[i].itemKeys[j]){
                 values.push(escape(URLParams[key][k]));
               }
@@ -47,10 +48,10 @@ socialMediaAPIModel.prototype.buildURL = function(URLParams){
           }
         }
         else if(typeof this.allowedParams[i].options == "object"){
-          optionFound = false
+          var optionFound = false;
           //check if value is one of the predefined options
-          for(j in this.allowedParams[i].options){
-            if(value === this.allowedParams[i].options[j]){
+          for(var l in this.allowedParams[i].options){
+            if(value === this.allowedParams[i].options[l]){
               optionFound = true;
             }
           }
@@ -85,13 +86,13 @@ socialMediaAPIModel.prototype.buildURL = function(URLParams){
     }
   }
   if(errors.length > 0){
-    for(i in errors){
-      if(errors[i].type === "missing" || errors[i].required){
+    for(var m in errors){
+      if(errors[m].type === "missing" || errors[m].required){
         fatalError = true;
-        window.console.log("Fatal Error: "+errors[i].key+" is required and threw a "+errors[i].type+" error.");
+        window.console.log("Fatal Error: "+errors[m].key+" is required and threw a "+errors[m].type+" error.");
       }
       else{
-        window.console.log("Warning: "+errors[i].key+" threw a "+errors[i].type+" error. Parameter omitted from URL");
+        window.console.log("Warning: "+errors[m].key+" threw a "+errors[i].type+" error. Parameter omitted from URL");
       }
     }
   }
@@ -101,7 +102,7 @@ socialMediaAPIModel.prototype.buildURL = function(URLParams){
   else{
     return false;
   }
-}
+};
 
 TwitterAPIModel = new socialMediaAPIModel({
   //See https://dev.twitter.com/docs/api/1/get/search for param descriptions
@@ -169,9 +170,40 @@ TwitterAPIModel = new socialMediaAPIModel({
       type : "boolean",
       required : false
     }
-  ],
-  responseObjectModel: {}
+  ]
 });
+
+var PinterestAPIModel = new socialMediaAPIModel({
+  baseURL: "http://query.yahooapis.com/v1/public/yql?q=select%20channel%20from%20xml%20where%20url%3D'http%3A%2F%2Fpinterest.com%2F",
+  getItems: function(json){
+    return json.query.results.rss.channel.item;
+  }
+});
+//Override default buildURL function because Pinterst doesn't have a real API
+PinterestAPIModel.buildURL = function(username){
+  return this.baseURL+username+"%2Ffeed.rss'&format=json";
+};
+function SocialMediaAPIRetriever(params){
+  console.log(params.URLParams);
+  this.model = params.model;
+  this.url = this.model.buildURL(params.URLParams);
+}
+
+SocialMediaAPIRetriever.prototype.query = function(){
+  $.ajax({
+    crossDomain:true,
+    url: this.url,
+    type: 'GET',
+    dataType: 'jsonp',
+    timeout: 3000,
+    error: function(jqXHR, textStatus, errorThrown){
+      
+    }.bind(this),
+    success:  function(json){
+      console.log(this.model.getItems(json));
+    }.bind(this)
+  });
+}
 
 function TweetRetriever(params){
   EventTarget.call(this);
@@ -215,7 +247,7 @@ function TweetRetriever(params){
   this.addStatusElem(params);
   this.addListener("update",function(){
     this.paintNewTweets(0);
-  })
+  });
   if(this.autoStart){
     this.query();
   }
