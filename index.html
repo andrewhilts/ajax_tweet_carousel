@@ -6,7 +6,6 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js">
 </script>
 <script type="text/javascript" src="js/jquery.jcarousel.js"></script>
-<script type="text/javascript" src="js/jquery.timers.js"></script>
 <script type="text/javascript">
 if (!Function.prototype.bind) {
 	filename = "js/bind_fallback.js";
@@ -16,229 +15,50 @@ if (!Function.prototype.bind) {
 	document.getElementsByTagName("head")[0].appendChild(fileref);
 }
 </script>
-<script type="text/javascript" src="js/eventtarget.js"></script>
 <script type="text/javascript" src="js/mustache.min.js"></script>
-<script type="text/javascript" src="js/ajax_tweet_retriever.js"></script>
+<script type="text/javascript" src="js/social_api_widget.js"></script>
 <!--
   jCarousel skin stylesheet
 -->
 <link rel="stylesheet" type="text/css" href="css/tweet-retriever-skin.css" />
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <script type="text/javascript">
-
-pinterest = new SocialMediaAPIWidget({
-  model: new PinterestAPIModel(),
-  URLParams: {username: "houseandhome"}
-});
-// twitter = new SocialMediaAPIWidget({
-//   model: new TwitterUserAPIModel(),
-//   URLParams: {username: "houseandhome",page:3}
-// });
-twitter2 = new SocialMediaAPIWidget({
-  model: new TwitterSearchAPIModel(),
-  URLParams: {q: "twitter",page:3}
-});
-
-function carouselBefore (carousel, li_object, index, state){
-  $(li_object).fadeTo(this.animationTime,0.01);
-}
-function carouselAfter(carousel, li_object, index, state){
-  if(state!=="init"){
-    $(li_object).fadeTo(1,0.01).delay(this.animationTime/2).fadeTo(this.animationTime,1);
-  }
-}
-
-function carouselInit(carousel)
-{
-    // Pause autoscrolling if the user moves with the cursor over the clip.
-    carousel.clip.hover(function() {
-        carousel.stopAuto();
-    }, function() {
-        carousel.startAuto();
-    });
-    function tweetnext() {carousel.next()};
-};
-
-function carouselDisplay(carousel){
-          if (carousel.state !== 'init') { 
-      real_times = $(this.container).find('span.real_time');
-       for(i in real_times){
-         if(!isNaN(i)){
-           new_time = real_times[i].innerHTML;
-           old_time = $(real_times[i]).parent().children('span.date');
-           $(old_time[0]).html(this.timeAgo(new_time));
-         }
-       }
-    }
-}
-
 $(document).ready(function(){
-  myTweets = new TweetRetriever({
-    queryType: "search",
-    queryString: "mylittlepony",
-    tempo: 120,
-    quantity: 20,
-    container: "tweets",
-    profileImgSize: "bigger",
-    displayRequestStatus: true
+  pinterest = new SocialMediaAPIWidget({
+    model: new PinterestAPIModel(),
+    URLParams: {username: "houseandhome"},
+    displayQuantity: 4,
+    el: $('#pinterest')
   });
-
-  //custom paint method
-  myTweets.paintTweet = function(tweet,e,i){
-    e.fadeOut(300, function(){
-        e.html(tweet);
-        profile_pic = e.children('a.profilePicLink').children('img');
-        i++;
-        this.paintNewTweets(i);
-        e.fadeIn(300);
-        profile_pic.load(function(){
-          $(this).addClass("fadeIn");
-        });
-      }.bind(this));
-  }
-
-  myTweets2 = new TweetRetriever({
-    queryString: "%23twitter",
-    tempo: 100,
-    container: "tweets2",
-    displayRequestStatus: true
+  twitter = new SocialMediaAPIWidget({
+    model: new TwitterUserAPIModel(),
+    URLParams: {username: "houseandhome"},
+    updateInterval: 10000,
+    displayQuantity: 6,
+    el: $('#twitter')
   });
-
-  myTweets2.addListener("displayInit",function(){
-    //remove standard update listener
-    this.removeDefaultUpdateMethod();
-    //set animation time (used in carousel functions)
-    this.animationTime = 1000;
-
-    params = {
-      auto: 1,
-      animation:this.animationTime,
-      scroll: 1,
-      wrap: 'circular',
-      vertical:true,
-      initCallback : carouselInit,
-      itemLoadCallback : carouselDisplay.bind(this),
-      itemFirstOutCallback : {
-        onBeforeAnimation: carouselBefore.bind(this),
-      },
-      itemLastInCallback : {
-        onBeforeAnimation: carouselAfter.bind(this),
-        //the below replaces the default update method
-        onAfterAnimation: this.carouselUpdate.bind(this)
-      }
-    };
-    //Add jcarousel
-    this.container.jcarousel(params);
+  twitter2 = new SocialMediaAPIWidget({
+    model: new TwitterSearchAPIModel(),
+    URLParams: {q: "#fail"},
+    updateInterval: 10000,
+    displayQuantity: 8,
+    el: $('#twitter2')
   });
-
 });
 </script>
   </head>
   <body>
   <div id="wrapper" class="clearfix">
-  <h1>Ajax TweetRetriever</h1>
-
-  <!-- Begin Tweet Carousel HTML tags !-->
-  <!-- the status div is automatically hidden if you set displayRequestStatus to false !-->
-  <!-- Ensure your skin's classname begins with jcarousel-skin- !-->
-  <div class="container">
-    <h2>Custom TweetPaint method</h2>
-    <ul id="tweets" class="tweet-retriever pic-orient" style="height:1616px"></ul>
-    <h3>Instantiation</h2>
-<pre>
-myTweets = new TweetRetriever({
-  queryString: "%23twitter",
-  tempo: 120,
-  quantity: 6,
-  container: "tweets",
-  profileImgSize: "bigger",
-  displayRequestStatus: true
-});
-</pre>
-  <h3>TweetPaint Method Override</h3>
-  <pre>
-myTweets.paintTweet = function(tweet,e,i){
-  e.fadeOut(300, function(){
-    e.html(tweet);
-    profile_pic = e.children('a.profileLink').children('img');
-    i++;
-    this.paintNewTweets(i);
-    e.fadeIn(300);
-    profile_pic.load(function(){
-      $(this).addClass("fadeIn");
-    });
-  }.bind(this));
-}
-  </pre>
-  </div>
-<div class="container">
+  
 <div class="grey tweet-retriever clearfix">
-  <h2>Inside a carousel, with custom update method</h2>
-  <ul id="tweets2" class="jcarousel-skin-tweet-retriever"></ul>
-</div>
-  <h3>Instantiation</h2>
-  <pre>
-myTweets2 = new TweetRetriever({
-  queryString: "%23drupal",
-  tempo: 100,
-  container: "tweets2"
-});
-  </pre>
-  <h3>Carousel applied on "displayInit" event</h3>
-  <pre>
-myTweets2.addListener("displayInit",function(){
-  //remove standard update listener
-  this.removeDefaultUpdateMethod();
-  //set animation time (used in carousel functions)
-  this.animationTime = 1000;
-
-  params = {
-    auto: 1,
-    animation:this.animationTime,
-    scroll: 1,
-    wrap: 'circular',
-    vertical:true,
-    initCallback : carouselInit,
-    itemFirstOutCallback : {
-      onBeforeAnimation: carouselBefore.bind(this),
-    },
-    itemLastInCallback : {
-      onBeforeAnimation: carouselAfter.bind(this),
-      //the below replaces the default update method
-      onAfterAnimation: this.carouselUpdate.bind(this)
-    }
-  };
-  //Add jcarousel
-  this.container.jcarousel(params);
-});
-  </pre>
+<ul id="pinterest" class="jcarousel-skin-tweet-retriever"></ul>
 </div>
 <div class="grey tweet-retriever clearfix">
-<ul id="test" class="jcarousel-skin-tweet-retriever"></ul>
+<ul id="twitter" class="jcarousel-skin-tweet-retriever"></ul>
 </div>
-  <ul id="tweets3" class="jcarousel-skin-tweet-retriever"></ul>
-  <ul id="tweets4" class="jcarousel-skin-tweet-retriever"></ul>
-  <!-- End Tweet Carousel HTML tags !-->
-  <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=147851285301709";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
-<div class="fb-recommendations" data-site="http://www.houseandhome.com" data-width="300" data-height="300" data-header="false" data-linktarget="_top"></div>
+<div class="grey tweet-retriever clearfix">
+<ul id="twitter2" class="jcarousel-skin-tweet-retriever"></ul>
+</div>
+
 </body>
 </html>
-<style type="text/css">
-  .fb_iframe_widget span {
-    width:298px !important;
-    height:275px !important;
-    overflow:hidden;
-    background:rgb(246,246,246);
-  }
-  .fb_iframe_widget span iframe {
-    left:-1px;
-    top:-1px;
-  }
-</style>
