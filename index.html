@@ -17,6 +17,7 @@ if (!Function.prototype.bind) {
 }
 </script>
 <script type="text/javascript" src="js/eventtarget.js"></script>
+<script type="text/javascript" src="js/mustache.min.js"></script>
 <script type="text/javascript" src="js/ajax_tweet_retriever.js"></script>
 <!--
   jCarousel skin stylesheet
@@ -25,9 +26,17 @@ if (!Function.prototype.bind) {
 <link rel="stylesheet" type="text/css" href="css/main.css" />
 <script type="text/javascript">
 
-pinterest = new SocialMediaAPIRetriever({
-  model: PinterestAPIModel,
-  URLParams: "houseandhome"
+pinterest = new SocialMediaAPIWidget({
+  model: new PinterestAPIModel(),
+  URLParams: {username: "houseandhome"}
+});
+// twitter = new SocialMediaAPIWidget({
+//   model: new TwitterUserAPIModel(),
+//   URLParams: {username: "houseandhome",page:3}
+// });
+twitter2 = new SocialMediaAPIWidget({
+  model: new TwitterSearchAPIModel(),
+  URLParams: {q: "twitter",page:3}
 });
 
 function carouselBefore (carousel, li_object, index, state){
@@ -134,7 +143,7 @@ $(document).ready(function(){
   <!-- Ensure your skin's classname begins with jcarousel-skin- !-->
   <div class="container">
     <h2>Custom TweetPaint method</h2>
-    <ul id="tweets" class="tweet-retriever pic-orient"></ul>
+    <ul id="tweets" class="tweet-retriever pic-orient" style="height:1616px"></ul>
     <h3>Instantiation</h2>
 <pre>
 myTweets = new TweetRetriever({
@@ -204,9 +213,32 @@ myTweets2.addListener("displayInit",function(){
 });
   </pre>
 </div>
+<div class="grey tweet-retriever clearfix">
+<ul id="test" class="jcarousel-skin-tweet-retriever"></ul>
+</div>
   <ul id="tweets3" class="jcarousel-skin-tweet-retriever"></ul>
   <ul id="tweets4" class="jcarousel-skin-tweet-retriever"></ul>
   <!-- End Tweet Carousel HTML tags !-->
-
-  </body>
+  <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=147851285301709";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<div class="fb-recommendations" data-site="http://www.houseandhome.com" data-width="300" data-height="300" data-header="false" data-linktarget="_top"></div>
+</body>
 </html>
+<style type="text/css">
+  .fb_iframe_widget span {
+    width:298px !important;
+    height:275px !important;
+    overflow:hidden;
+    background:rgb(246,246,246);
+  }
+  .fb_iframe_widget span iframe {
+    left:-1px;
+    top:-1px;
+  }
+</style>

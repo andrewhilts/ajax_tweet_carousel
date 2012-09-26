@@ -11,7 +11,7 @@ body {font-family:Arial; font-size:13px}
   padding:0;
 }
 
-.tweet-retriever img {
+.tweet-retriever img, .tweet-retriever .img {
   float:left;
   margin:3px 5px 0 0;
   border:0;
