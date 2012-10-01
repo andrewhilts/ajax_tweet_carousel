@@ -44,6 +44,12 @@ $(document).ready(function(){
     displayQuantity: 8,
     el: $('#twitter2')
   });
+  yelp = new SocialMediaAPIWidget({
+    model: new YelpSearchAPIModel(),
+    URLParams: {term: "tacos",location: "Toronto", ywsid: "90ZG0AH-BK7fq0S4M3lKAg"},
+    displayQuantity: 8,
+    el: $('#yelp')
+  });
 });
 </script>
   </head>
@@ -59,6 +65,8 @@ $(document).ready(function(){
 <div class="grey tweet-retriever clearfix">
 <ul id="twitter2" class="jcarousel-skin-tweet-retriever"></ul>
 </div>
-
+<div class="grey tweet-retriever clearfix">
+<ul id="yelp" class="jcarousel-skin-tweet-retriever"></ul>
+</div>
 </body>
 </html>

@@ -317,6 +317,62 @@ PinterestAPIModel.prototype = new socialMediaAPIModel({
 PinterestAPIModel.prototype.buildURL = function(URLParams){
   return this.baseURL+URLParams.username+"%2Ffeed.rss'&format=json";
 };
+
+function YelpSearchAPIModel(){}
+YelpSearchAPIModel.prototype = new socialMediaAPIModel({
+  //See http://www.yelp.com/developers/documentation/v2/search_api for param descriptions
+  baseURL: "http://api.yelp.com/business_review_search",
+  allowedParams: [
+    {
+      key: "ywsid",
+      type: "string",
+      required: true
+    },
+    {
+      key : "location",
+      type : "string",
+      required : true
+    },
+    {
+      key : "term",
+      type : "string",
+      required : false
+    },
+    {
+      key : "limit",
+      type : "number",
+      required : false
+    },
+    {
+      key : "cc",
+      type : "number",
+      required : false
+    },
+    {
+      key : "category",
+      type : "string",
+      required : false
+    },
+    {
+      key : "radius",
+      type : "number",
+      required : false
+    }
+  ],
+  getItems: function(json){
+    return json.businesses;
+  },
+  template: '<li><img src="{{photo_url_small}}"/><div>{{name}}<br>{{address1}},{{city}}</div><div><img src="{{rating_img_url_small}}" alt="{{avg_rating}}"/></div><div>{{review_count}} reviews</div></li>',
+  parseData: function(data,parent){
+    newData = data;
+    return newData;
+  }
+});
+YelpSearchAPIModel.prototype.addQuantityParam = function(quantity,URLParams){
+  URLParams['limit'] = quantity;
+  return URLParams;
+};
+
 function SocialMediaAPIWidget(params){
   this.el = params.el;
   this.model = params.model;
